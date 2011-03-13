@@ -1,7 +1,7 @@
 Package: FisherEM
 Type: Package
 Title: Model-Based Clustering in the Fisher Discriminative Subspace
-Version: 1.0
+Version: 1.1.2
 Depends: MASS, e1071
 Date: 2011-03-13
 Author: J.Loisel T.Souvannarath M.Tchebanenko C.Bouveyron C.Brunet
@@ -15,6 +15,6 @@ Description: Model-Based Clustering in the Fisher Discriminative
         visualize the clustered data.
 License: GPL-2
 LazyLoad: yes
-Packaged: 2011-05-11 14:30:41 UTC; shimpao
+Packaged: 2011-05-29 17:32:37 UTC; shimpao
 Repository: CRAN
-Date/Publication: 2011-05-11 15:03:37
+Date/Publication: 2011-05-29 18:39:50
