@@ -1,19 +1,6 @@
-## eval ##
-#
-# Author: 	C.Bouveyron & C.Brunet
-# Institute:	SAMM - Paris 1 / Evry
-# Date: 	February 2011
-# License:	GPL v2
-# 
-# ***************************************************************
-# function which computes clustering accuracy when labels are known.
-# Use: evalEM(cls,res,K)
-# ***************************************************************
-# Call of libraries needed
-library('e1071')
-# ***************************************************************
-#
-eval.fem <- function(obj,cls,disp=1){
+# library('e1071')
+evalEM <-
+function(cls,obj,disp=1){
 
 K = length(unique(cls))
 res = obj$cls
@@ -49,3 +36,4 @@ res = obj$cls
 	# Return results
 	prms=list(lbl=lbl,tx=tx)
 }
+

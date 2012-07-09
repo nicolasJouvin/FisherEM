@@ -1,0 +1,17 @@
+citHeader("To cite Fisher-EM in publications use:")
+
+citEntry(entry = "Article",
+  title        = "Simultaneous model-based clustering and visualization in the Fisher discriminative subspace",
+  author       = personList(as.person("Charles Bouveyron"),
+                   as.person("Camille Brunet")),
+  journal      = "Statistics and Computing",
+  year         = "2012",
+  volume       = "22",
+  number       = "1",
+  pages        = "301-324",
+
+  textVersion  =
+  paste("Charles Bouveyron, Camille Brunet (2012).",
+        "Simultaneous model-based clustering and visualization in the Fisher discriminative subspace.",
+        "Statistics and Computing, 22(1), 301-324.")
+)

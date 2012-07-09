@@ -1,3 +1,4 @@
-export(fem,eval.fem,plot.fem)
-
-
+importFrom(graphics,plot)
+export(fem,evalEM,plot.fem)
+exportPattern(criteria.R,estep.R,fem.loglik.R,fem_main.R,fem_sparse.R,fstep.fisher.R,fstep.GramSc.R,fstep.qiao.R,fstep.sparse.R,mstep.R)
+S3method(plot,fem)

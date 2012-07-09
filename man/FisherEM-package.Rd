@@ -2,46 +2,34 @@
 \alias{FisherEM-package}
 \alias{FisherEM}
 \docType{package}
-\title{
-Model-based Clustering in the Fisher Discriminative Subspace
+\title{ The FisherEM package
+
 }
 \description{
-Model-Based Clustering in the Fisher Discriminative Subspace provides 
-a low-dimensional discriminative representation of the clustered data.
-To find a parsimonious and discriminative fit for the data this method 
-uses discriminative latent model (DLM).The Fisher-EM algorithm estimates 
-the parameters of DLM models in order to cluster and visualize the clustered data.
+The FisherEM package provides an efficient algorithm for the unsupervised classification of high-dimensional data. This FisherEM algorithm models and clusters the data in a discriminative and low-dimensional latent subspace. It also provides a low-dimensional representation of the clustered data.
 }
 \details{
 \tabular{ll}{
 Package: \tab FisherEM\cr
 Type: \tab Package\cr
-Version: \tab 1.0\cr
-Date: \tab 2011-03-13\cr
-License: \tab GPL-2 \cr
+Version: \tab 1.2\cr
+Date: \tab 2012-07-09\cr
+License: \tab GPL-2\cr
 LazyLoad: \tab yes\cr
 }
-This package is used to make simultaneous model-based clustering with high 
-dimensional data using discriminative latent mixture (DLM) model with 
-constraining parameters within and between groups. Twelve parsimonious 
-DLM models were set up to provide various situations. The fem() function
-computes a discriminant subspace alternatively with Gaussian Mixture Model 
-and using the Fisher-EM algorithm which is divided into three steps due to the 
-nature of the model. The F step estimates the orientation matrix 
-of the discriminative latent space conditionally to the posterior 
-probalities. The E step computes the posterior probabilities of 
-each observations. The M step updates the parameters of the 
-Mixture model (mean, prior probabilities).
-}
-\author{
-J.Loisel  T.Souvannarath  M.Tchebanenko  C.Bouveyron  C.Brunet
 
+}
+\author{ 
+Charles Bouveyron and Camille Brunet
+
+Maintainer: Camille Brunet <camille.brunet@gmail.com>
 }
 \references{
-C.Bouveyron and C.Brunet, Simultaneous model-based clustering and visualization in the Fisher discriminative subspace, Statistics and Computing, to appear, 2011
+Charles Bouveyron, Camille Brunet (2012), "Simultaneous model-based clustering and visualization in the Fisher discriminative subspace.",
+        Statistics and Computing, 22(1), 301-324.
 
+Charles Bouveyron, Camille Brunet (2012), "Discriminative variable selection for clustering with the sparse Fisher-EM algorithm",
+        preprint Hal n-00685183.
 }
-
-
 
 

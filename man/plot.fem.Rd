@@ -2,39 +2,34 @@
 \alias{plot.fem}
 
 \title{
-Plots the fem results
+The plot.fem function
 }
 \description{
-Plots the projection of clustered iris data into the estimated latent discriminative subspace with Fisher-EM 
-or the evolution of associated log-likelihood
+This function enables to plot the clustered data in the two axes the most discriminative fitted by the Fisher-EM algorithm.
 }
 \usage{
-plot.fem(x, loglik = F,...)
+\method{plot}{fem}(x, Y, loglik=F, ...)
 }
 
 \arguments{
-  \item{x}{
-object from fem(), i.e, the clustering results obtained with the Fisher-EM algorithm
+  \item{x}{the fem object
+}
+  \item{Y}{
+the data matrix containing the individuals in lines and the variables in columns
 }
   \item{loglik}{
-If loglik=F the function plots the projection of clustered iris data into the estimated latent discriminative subspace with Fisher-EM. 
-
-If loglik=T the function plots the evolution of associated log-likelihood
+enables to plot the loglikelihood values according to the number of iterations if loglik=T. By default, loglik=F.
 }
-\item{...}{
-	Arguments to be passed to methods.
+  \item{...}{
+some additional options for the plot.
 }
 }
 
 
-
-
-\author{
-J.Loisel  T.Souvannarath  M.Tchebanenko  C.Bouveyron  C.Brunet
-}
+\seealso{fem, evalEM}
 
 \examples{
-Y<-iris[,1:4]
-x<-fem(Y,3,model='AkB')
-plot.fem(x,loglik=FALSE)
+data(iris)
+res = fem(iris[,-5],3,model='AkB')
+plot.fem(res,iris[,-5])
 }

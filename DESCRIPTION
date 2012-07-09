@@ -1,20 +1,19 @@
 Package: FisherEM
 Type: Package
-Title: Model-Based Clustering in the Fisher Discriminative Subspace
-Version: 1.1.2
-Depends: MASS, e1071
-Date: 2011-03-13
-Author: J.Loisel T.Souvannarath M.Tchebanenko C.Bouveyron C.Brunet
-Maintainer: Who to complain to <thanh.souvannarath@gmail.com>
-Description: Model-Based Clustering in the Fisher Discriminative
-        Subspace provides a low-dimensional discriminative
-        representation of the clustered data. To find a parsimonious
-        and discriminative fit for the data this method uses
-        discriminative latent model (DLM). The Fisher EM algorithm
-        estimates the parameters of DLM models in order to cluster and
-        visualize the clustered data.
+Title: The Fisher-EM algorithm
+Version: 1.2
+Date: 2012-07-09
+Author: Charles Bouveyron and Camille Brunet
+Maintainer: Camille Brunet <camille.brunet@gmail.com>
+Depends: MASS,elasticnet,e1071,nlme
+Description: The FisherEM package provides an efficient algorithm for
+        the unsupervised classification of high-dimensional data. This
+        FisherEM algorithm models and clusters the data in a
+        discriminative and low-dimensional latent subspace. It also
+        provides a low-dimensional representation of the clustered
+        data.
 License: GPL-2
 LazyLoad: yes
-Packaged: 2011-05-29 17:32:37 UTC; shimpao
+Packaged: 2012-07-11 15:44:35 UTC; charles
 Repository: CRAN
-Date/Publication: 2011-05-29 18:39:50
+Date/Publication: 2012-07-13 03:08:38
