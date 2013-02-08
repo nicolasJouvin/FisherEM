@@ -1,4 +1,3 @@
-# library('MASS')
 fem.loglik <-
 function(prms,K,Y,U){
 	# Initialization

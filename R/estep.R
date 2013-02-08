@@ -29,8 +29,9 @@ function(prms,Y,U){
 			}
 		}
 		else{ # Do the same but by blocks of memlim obs.
-			quot = n %/% memlim # quotient de la division euclidienne
-			for (i in 1:(quot+1)){
+			if (n%%memlim==0) quot = n %/% memlim # quotient de la division euclidienne
+      else quot = n %/% memlim + 1
+			for (i in 1:quot){
 				if (d==1){
 					QQ[(memlim*(i-1)+1):min(memlim*i,n),k] =  1/D[k,1,1] * rowSums(projYY[(memlim*(i-1)+1):min(memlim*i,n),]^2) + 1/D[k,p,p]*rowSums((YY[(memlim*(i-1)+1):min(memlim*i,n),] - projYY[(memlim*(i-1)+1):min(memlim*i,n),])^2) + (p-d)*log(bk) + log(D[k,1,1]) - 2*log(prop[k])
 				} else{

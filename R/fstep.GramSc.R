@@ -1,4 +1,3 @@
-#library('MASS')
 fstep.GramSc <-
 function(Y,T,kernel){
 
@@ -19,7 +18,7 @@ function(Y,T,kernel){
 	
 		# Eigendecomposition of S^-1 * B
 	eig = eigen(solve(S)%*%B)
-	U[,1] = matrix(as.real(eig$vec[,1]),ncol=1)
+	U[,1] = matrix(Re(eig$vec[,1]),ncol=1)
 
 if (d>1) for (k in 2:d){ 
 	  W = as.matrix(U[,-c(k:d)])  
@@ -42,7 +41,7 @@ if (d>1) for (k in 2:d){
 	S.p = crossprod(P,crossprod(t(S),P))
 	eig = eigen(ginv(S.p)%*%B.p)
 
-	Umax = matrix(as.real(eig$vec[,1]),ncol=1) 
+	Umax = matrix(Re(eig$vec[,1]),ncol=1) 
         U[,k]= P%*%Umax	
 	}
 U

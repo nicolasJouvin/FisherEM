@@ -1,6 +1,5 @@
-library('MASS')
 fem_main <-
-function(Y,K,init,maxit,eps,Tinit,model,kernel,method,graph,Hess){
+function(Y,K,init,maxit,eps,Tinit,model,kernel,method,graph,Hess,memlim,nbcore){
 
   # Initialization
   Y = as.matrix(Y)
@@ -39,7 +38,8 @@ function(Y,K,init,maxit,eps,Tinit,model,kernel,method,graph,Hess){
              'GS'= fstep.GramSc(Y,T,kernel),
              'REG'  = fstep.qiao(Y,T,kernel))
   prms      = mstep(Y,V,T,model=model,method=method)
-  res.estep = estep(prms,Y,V)
+  if ((n < memlim) || (nbcore==1)) res.estep = estep(prms,Y,V)
+  else res.estep = estep_par(prms,Y,V,memlim,nbcore)
   T         = res.estep$T
   Lobs[1]   = res.estep$loglik
   
@@ -54,7 +54,8 @@ function(Y,K,init,maxit,eps,Tinit,model,kernel,method,graph,Hess){
                'GS'= fstep.GramSc(Y,T,kernel),
                'REG'  = fstep.qiao(Y,T,kernel))
     prms      = mstep(Y,V,T,model=model,method=method)
-    res.estep = estep(prms,Y,V)
+    if ((n < memlim) || (nbcore==1)) res.estep = estep(prms,Y,V)
+    else res.estep = estep_par(prms,Y,V,memlim,nbcore)
     T         = res.estep$T
     Lobs[i+1] = res.estep$loglik
     

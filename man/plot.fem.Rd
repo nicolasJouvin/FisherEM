@@ -5,10 +5,10 @@
 The plot.fem function
 }
 \description{
-This function enables to plot the clustered data in the two axes the most discriminative fitted by the Fisher-EM algorithm.
+This function enables to plot the clustered data in the two most discriminative axes fitted by the Fisher-EM algorithm. In the case K=2, only one axis is discriminative. The projection is therefore made in the two first PCs of PCA.
 }
 \usage{
-\method{plot}{fem}(x, Y, loglik=F, ...)
+ \method{plot}{fem}(x, Y, loglik=F, ...)
 }
 
 \arguments{

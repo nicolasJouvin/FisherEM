@@ -1,4 +1,3 @@
-#library('MASS')
 mstep <-
 function(Y,U,T,model,method){
 	# 12 different submodels: [DkBk] ... [AkjBk]

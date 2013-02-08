@@ -11,8 +11,7 @@ a common and low dimensional subspace. An EM-like algorithm estimates both
 the discriminative subspace and the parameters of the mixture model.
 }
 \usage{
-fem(Y,K,init='random',maxit=100,eps=1e-6,Tinit=c(),model='AkjBk',
-      kernel='',graph=F,Hess=F,method='SVD',l1=0.3,l2=0,nbit=2)
+fem(Y,K,init='random',maxit=100,eps=1e-6,Tinit=c(),model='AkjBk',kernel='',graph=F,Hess=F,method='REG',crit='bic',l1=0.3,l2=0,nbit=2,memlim=2500,nbcore=1)
 }
 \arguments{
   \item{Y}{
@@ -38,6 +37,9 @@ a n x K matrix which contains posterior probabilities: each line corresponds to 
 "AjB", "ABk", "AB".  The option "all" executes the Fisher-EM algorithm on the 12 DLM models and select the best model according to the maximum value obtained by 
 BIC criterion. 
 }
+  \item{crit}{ the criterion used to select the model: "bic", "aic" or "icl". By default, crit="bic".
+}
+
   \item{kernel}{ enables to deal with the n < p problem. By default, no kernel ' ' is used. But the user has also the choice between 3 options for the kernel: 'linear', 
 'sigmoid' or 'rbf'.
 }
@@ -60,6 +62,12 @@ is a l2 penalty term.
 }
   \item{nbit}{
 number of iterations for fitting the sparse loadings at each update of the projection matrix.
+}
+  \item{memlim}{
+size of data over which the fem algorithm is parallelized.
+}
+  \item{nbcore}{
+number of cores used when the fem algorithm is parallelized. By default, nbcore=1. If nbcore=NULL, the number of cores is automatically evaluated.
 }
 }
 

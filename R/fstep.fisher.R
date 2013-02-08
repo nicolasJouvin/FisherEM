@@ -20,11 +20,10 @@ function(Y,T,kernel){
 		U   = eig$u[,1:d]
 	}
 	else{
-		cat('Kernel mode!\n')
 		if (n<p | kernel=='linear') G = XX %*% t(XX)
 		if (kernel=='rbf') {sigma=1; G = as.matrix(exp(dist(XX,diag=T)^2/(2*sigma^2)))}
 		if (kernel=='sigmoid') {a=1;r=0.1;G = tanh(a * XX %*% t(XX) + r)}
-		lambda = 0
+		lambda = 0.5
 		S = G %*% G + lambda*diag(n)
 		B = G %*% TT %*% t(TT) %*% G
 		H = svd(ginv(S)%*%B,nu=d,nv=0)$u[,1:d]

@@ -1,5 +1,5 @@
 fem_sparse <-
-function(Y,K,maxit,eps,Tinit,model,method,l1,nbit,l2){
+function(Y,K,maxit,eps,Tinit,model,method,l1,nbit,l2,memlim){
 
   if (length(l1)!=1 | l1>1){cat('\n','The l1 penalty term is a single figure comprises between 0 and 1','\n')
 		            break}
@@ -16,7 +16,8 @@ function(Y,K,maxit,eps,Tinit,model,method,l1,nbit,l2){
   T         = Tinit
   V         = fstep.sparse(Y,T,l1,nbit,l2)
   prms      = mstep(Y,V,T,model=model,method=method)
-  res.estep = estep(prms,Y,V)
+  if (n < memlim) res.estep = estep(prms,Y,V)
+  else res.estep = estep_par(prms,Y,V,memlim,nbcore)
   T         = res.estep$T
   Lobs[1]   = res.estep$loglik
   

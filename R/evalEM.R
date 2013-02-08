@@ -1,8 +1,10 @@
-# library('e1071')
 evalEM <-
 function(cls,obj,disp=1){
 
-K = length(unique(cls))
+Klbl = length(unique(as.numeric(cls)))
+if (Klbl!=obj$prms$K) stop("K is different between the partitions \n",call.=FALSE)
+
+K = Klbl
 res = obj$cls
 
 	# Initialization

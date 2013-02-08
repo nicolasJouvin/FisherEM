@@ -1,5 +1,3 @@
-#library('MASS')
-#library('elasticnet') 
 fstep.sparse <-
 function(X,T,lambda,nbit,l2){
 
@@ -23,11 +21,13 @@ function(X,T,lambda,nbit,l2){
 	Hw = X - t(apply(T,1,'%*%',m))
 	
 	# Cholesky decomposition of t(Hw) %*% Hw
-	Rw = chol(t(Hw)%*%Hw)
+	if (nrow(X)>p) Rw = chol(t(Hw)%*%Hw) else {
+				gamma = 0.5
+				Rw = chol(t(Hw)%*%Hw + gamma*diag(p))}
 
 	# LASSO & SVD
 	Binit = eigen(ginv(cov(X))%*%(t(Hb)%*%Hb))$vect[,1:d]
-	if (is.complex(Binit)) Binit = matrix(as.real(Binit),ncol=d,byrow=F)
+	if (is.complex(Binit)) Binit = matrix(Re(Binit),ncol=d,byrow=F)
 	B = Binit
 	res.svd = svd(t(ginv(Rw))%*%t(Hb)%*%Hb%*%B)
 	A = res.svd$u %*% t(res.svd$v)

@@ -4,7 +4,7 @@
 The evalEM function
 }
 \description{
-evalEM provides a contingency table and a correct classification rate from the clustering results of the Fisher-EM algorithm and true labels.
+evalEM provides a contingency table and a correct classification rate from the clustering results of the Fisher-EM algorithm and another partition of data. The number of clusters has to be the same between both partitions
 }
 \usage{
 evalEM(cls, obj, disp = 1)
@@ -12,7 +12,7 @@ evalEM(cls, obj, disp = 1)
 
 \arguments{
   \item{cls}{
-is a numerical vector containing the true labels for each individual
+is a numerical vector containing reference labels.
 }
   \item{obj}{
 the object obtained by the fem() function
