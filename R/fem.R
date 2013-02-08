@@ -1,5 +1,5 @@
 fem <-
-function(Y,K,init='random',maxit=100,eps=1e-6,Tinit=c(),model='AkjBk',kernel='',graph=F,Hess=F,method='REG',crit='bic',l1=0.3,l2=0,nbit=2,memlim=2500,nbcore=1){
+function(Y,K,init='random',maxit=100,eps=1e-6,Tinit=c(),model='AkjBk',kernel='',graph=F,Hess=F,method='REG',crit='bic',l1=0.3,l2=0,nbit=2){
 
 MOD = c('DkBk','DkB','DBk','DB','AkjBk','AkjB','AkBk','AkB','AjBk','AjB','ABk','AB','all')
 MET = c('SVD','REG','GS','sparse')
@@ -16,7 +16,7 @@ if (crit=='') crit='bic'
 	    resultat = pairlist()
 	    bic = aic = icl = rep(NA,12)
 		  for(i in 1:12){
-		    try(resultat[[i]]<-fem_main(Y,K,init=init,maxit=maxit,eps=eps,Tinit=Tinit,model=MOD[i],kernel=kernel,graph=F,Hess=F,method=method,memlim=memlim,nbcore=nbcore))
+		    try(resultat[[i]]<-fem_main(Y,K,init=init,maxit=maxit,eps=eps,Tinit=Tinit,model=MOD[i],kernel=kernel,graph=F,Hess=F,method=method))
 		    try(bic[i]<-resultat[[i]]$bic) 
 		    try(aic[i]<-resultat[[i]]$aic)
 		    try(icl[i]<-resultat[[i]]$icl)
@@ -43,13 +43,13 @@ if (crit=='') crit='bic'
 						break 
       }
 
-      else if (model!='all' & method=='sparse'){ res0 = fem_main(Y,K,init=init,maxit=50,eps=eps,Tinit=Tinit,model=model,kernel=kernel,graph=F,Hess=F,method='REG',memlim=2500) 
-						 res  = fem_sparse(Y,K,maxit=15,eps=eps,Tinit=res0$P,model=model,method='sparse',l1=l1,l2=l2,nbit=nbit,memlim=memlim)
+      else if (model!='all' & method=='sparse'){ res0 = fem_main(Y,K,init=init,maxit=50,eps=eps,Tinit=Tinit,model=model,kernel=kernel,graph=F,Hess=F,method='REG') 
+						 res  = fem_sparse(Y,K,maxit=15,eps=eps,Tinit=res0$P,model=model,method='sparse',l1=l1,l2=l2,nbit=nbit)
 						 cat('\n','The model is:',res$prms$model,'with a l1 term equal to:',l1, 'and with a BIC equal to:',res$bic,'\n')
 						 cat('\n')
       }
       
-      else { res = fem_main(Y,K,init=init,maxit=maxit,eps=eps,kernel=kernel,graph=graph,Hess=Hess,Tinit=Tinit,model=model,method=method,memlim=memlim,nbcore=nbcore) 
+      else { res = fem_main(Y,K,init=init,maxit=maxit,eps=eps,kernel=kernel,graph=graph,Hess=Hess,Tinit=Tinit,model=model,method=method) 
 	if (crit=='bic') res_crit=res$bic
 	if (crit=='aic') res_crit=res$aic
 	if (crit=='icl') res_crit=res$icl

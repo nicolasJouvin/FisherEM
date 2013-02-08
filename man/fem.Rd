@@ -11,7 +11,7 @@ a common and low dimensional subspace. An EM-like algorithm estimates both
 the discriminative subspace and the parameters of the mixture model.
 }
 \usage{
-fem(Y,K,init='random',maxit=100,eps=1e-6,Tinit=c(),model='AkjBk',kernel='',graph=F,Hess=F,method='REG',crit='bic',l1=0.3,l2=0,nbit=2,memlim=2500,nbcore=1)
+fem(Y,K,init='random',maxit=100,eps=1e-6,Tinit=c(),model='AkjBk',kernel='',graph=F,Hess=F,method='REG',crit='bic',l1=0.3,l2=0,nbit=2)
 }
 \arguments{
   \item{Y}{
@@ -62,12 +62,6 @@ is a l2 penalty term.
 }
   \item{nbit}{
 number of iterations for fitting the sparse loadings at each update of the projection matrix.
-}
-  \item{memlim}{
-size of data over which the fem algorithm is parallelized.
-}
-  \item{nbcore}{
-number of cores used when the fem algorithm is parallelized. By default, nbcore=1. If nbcore=NULL, the number of cores is automatically evaluated.
 }
 }
 
