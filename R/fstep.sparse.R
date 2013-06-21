@@ -28,7 +28,7 @@ function(X,T,lambda,nbit,l2){
 	# LASSO & SVD
 	Binit = eigen(ginv(cov(X))%*%(t(Hb)%*%Hb))$vect[,1:d]
 	if (is.complex(Binit)) Binit = matrix(Re(Binit),ncol=d,byrow=F)
-	B = Binit
+	if (is.null(dim(Binit))) B = matrix(Binit) else B=Binit
 	res.svd = svd(t(ginv(Rw))%*%t(Hb)%*%Hb%*%B)
 	A = res.svd$u %*% t(res.svd$v)
 	for (i in 1:nbit){
@@ -51,6 +51,6 @@ function(X,T,lambda,nbit,l2){
 	}
 	
 	# return the sparse loadings
-	Beta
+	as.matrix(Beta)
 }
 

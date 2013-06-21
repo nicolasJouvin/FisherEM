@@ -1,8 +1,6 @@
-fem_sparse <-
-function(Y,K,maxit,eps,Tinit,model,method,l1,nbit,l2){
-
-  if (length(l1)!=1 | l1>1){cat('\n','The l1 penalty term is a single figure comprises between 0 and 1','\n')
-		            break}
+fem.sparse <- function(Y,K,maxit,eps,Tinit,model,method='reg',l1,nbit,l2){
+  colnames = colnames(Y)
+  if (length(l1)!=1 | l1>1){cat('\n','The l1 penalty term is a single figure comprises between 0 and 1','\n'); break}
   # Initialization
   Y = as.matrix(Y)
   n = nrow(Y)
@@ -15,8 +13,8 @@ function(Y,K,maxit,eps,Tinit,model,method,l1,nbit,l2){
   # Initialization of T
   T         = Tinit
   V         = fstep.sparse(Y,T,l1,nbit,l2)
-  prms      = mstep(Y,V,T,model=model,method=method)
-  res.estep = estep(prms,Y,V)
+  prms      = fem.mstep(Y,V,T,model=model,method=method)
+  res.estep = fem.estep(prms,Y,V)
   T         = res.estep$T
   Lobs[1]   = res.estep$loglik
   
@@ -25,8 +23,8 @@ function(Y,K,maxit,eps,Tinit,model,method,l1,nbit,l2){
       for (i in 1:maxit){
       # The three main steps F, M and E
 		      V         = fstep.sparse(Y,T,l1,nbit,l2)
-		      prms      = mstep(Y,V,T,model=model,method=method)
-		      res.estep = estep(prms,Y,V)
+		      prms      = fem.mstep(Y,V,T,model=model,method=method)
+		      res.estep = fem.estep(prms,Y,V)
 		      T         = res.estep$T
 		      Lobs[i+1] = res.estep$loglik
     
@@ -42,8 +40,10 @@ function(Y,K,maxit,eps,Tinit,model,method,l1,nbit,l2){
   
   # Returning the results
   cls  = max.col(T)
-  crit = criteria(Lobs[(i+1)],T,prms,n); # BIC
-  res  = list(cls=cls,P=T,prms=prms,U=V,aic=crit$aic,bic=crit$bic,icl=crit$icl,loglik=Lobs[2:(i+1)],ll=Lobs[i+1],Hess=NA)
+  crit = fem.criteria(Lobs[(i+1)],T,prms,n)
+  rownames(V) = colnames
+  colnames(V) = paste('U',1:d,sep='')
+  res  = list(K=K,cls=cls,P=T,U=V,aic=crit$aic,mean=prms$mean,my=prms$my,prop=prms$prop,D=prms$D,model=prms$model,bic=crit$bic,icl=crit$icl,loglik=Lobs[2:(i+1)],ll=Lobs[i+1],method=method)
   
   res
 }

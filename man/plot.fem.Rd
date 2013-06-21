@@ -2,34 +2,33 @@
 \alias{plot.fem}
 
 \title{
-The plot.fem function
+The plot function for 'fem' objects.
 }
 \description{
-This function enables to plot the clustered data in the two most discriminative axes fitted by the Fisher-EM algorithm. In the case K=2, only one axis is discriminative. The projection is therefore made in the two first PCs of PCA.
-}
+This function plots different information about 'fem' objects such as model selection, log-likelihood evolution and visualization of the clustered data into the discriminative subspace fitted by the Fisher-EM algorithm.}
 \usage{
- \method{plot}{fem}(x, Y, loglik=F, ...)
+ \method{plot}{fem}(x, frame=0, crit=c(),...)
 }
 
 \arguments{
-  \item{x}{the fem object
+  \item{x}{The fem object.
 }
-  \item{Y}{
-the data matrix containing the individuals in lines and the variables in columns
+  \item{frame}{0: all plots; 1: selection of the number of groups; 2: log-likelihood; projection of the data into the discriminative subspace.
 }
-  \item{loglik}{
-enables to plot the loglikelihood values according to the number of iterations if loglik=T. By default, loglik=F.
+\item{crit}{
+The model selection criterion to display. Default is the criterion used in the 'fem' function ('icl' by default).
 }
   \item{...}{
-some additional options for the plot.
+Additional options to pass to the plot function.
 }
 }
 
-
-\seealso{fem, evalEM}
+\seealso{fem, sfem, fem.ari, summary.fem}
 
 \examples{
 data(iris)
-res = fem(iris[,-5],3,model='AkB')
-plot.fem(res,iris[,-5])
+res = fem(iris[,-5],K=2:5,model='AkB')
+summary(res)
+plot(res)
+fem.ari(res,as.numeric(iris[,5]))
 }

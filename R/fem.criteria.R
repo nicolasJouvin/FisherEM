@@ -1,4 +1,4 @@
-criteria <-
+fem.criteria <-
 function(loglik,T,prms,n){
 	K = prms$K
 	d = K-1
@@ -18,9 +18,14 @@ function(loglik,T,prms,n){
 		'ABk'  = (K-1) + K*d + (K-1)*(p-K/2) + K+1,
 		'AB'   = (K-1) + K*d + (K-1)*(p-K/2) + 2)
 	aic = loglik - comp # AIC criterion
-	bic = loglik - 1/2 * comp * log(n)/n # BIC criterion
+	bic = loglik - 1/2 * comp * log(n) # BIC criterion
 	Z = matrix(as.numeric(T >= (1-1/K)),ncol=K,byrow=T)
-	icl = loglik - 1/2 *  comp * log(n) - sum(Z*log(T)) # ICL criterion
+	icl = loglik - 1/2 *  comp * log(n) - sum(Z*log(T+1e-15)) # ICL criterion
+	#XX = as.matrix(Y - t(colMeans(Y)*t(matrix(1,n,p))))
+	#TT = t(apply(T,1,"/",sqrt(colSums(T))))
+	#S = t(XX) %*% XX /n
+	#B = t(XX)%*%TT%*%t(TT)%*%XX / n
+ 	#fish = sum(diag(ginv(t(V)%*%S%*%V)%*%(t(V)%*%B%*%V)))
 	list(aic=aic,bic=bic,icl=icl)
 }
 

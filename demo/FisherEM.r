@@ -4,7 +4,7 @@ lbl= as.numeric(iris[,5])
 K  = 3
 set.seed(2)
 Tinit = t(rmultinom(150,1,c(rep(1/K,K))))
-U  = fem_main(Y,3,init='user',Tinit=Tinit,model='AkB',kernel='',graph=F,Hess=F,memlim=2500,nbcore=0,maxit=1,method='GS',eps=1e-3)$U
+U  = fem(Y,3,init='user',Tinit=Tinit,model='AkB',maxit=1,method='gs',eps=1e-3)$U
 cls1 = cls = max.col(Tinit)
 for (i in 1:15){
 	  # x11()
@@ -43,9 +43,8 @@ for (i in 1:15){
 	  barplot(yhist1$counts, axes=FALSE,col='lightgreen', xlim=c(0,topY), space=0, horiz=TRUE) 
 	  barplot(yhist2$counts, axes=FALSE,col='gray', xlim=c(0,topY), space=0, horiz=TRUE,add=T) 
 	  barplot(yhist3$counts, axes=FALSE,col='darkblue', xlim=c(0,topY), space=0, horiz=TRUE,add=T) 
-	  res = fem_main(Y,3,init='user',Tinit=Tinit,model='AkB',kernel='',graph=F,Hess=F,memlim=2500,nbcore=0,maxit=1,method='GS',eps=1e-3)
+	  res = fem(Y,3,init='user',Tinit=Tinit,model='AkB',maxit=1,method='gs',eps=1e-3)
 	  Tinit = res$P
 	  cls1 = cls = res$cls
 	  U = res$U
 }
-cat('\n','The model is:',res$prms$model, 'with a',crit,'equal to:',res_crit,'\n')

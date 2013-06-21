@@ -1,5 +1,6 @@
 fstep.fisher <-
 function(Y,T,kernel){
+
 	n = nrow(Y)
 	p = ncol(Y)
 	K = ncol(T)
@@ -29,6 +30,6 @@ function(Y,T,kernel){
 		H = svd(ginv(S)%*%B,nu=d,nv=0)$u[,1:d]
 		U = svd(t(Y) %*% H,nu=d,nv=0)$u[,1:d]
 	}
-U
+        as.matrix(U)
 }
 

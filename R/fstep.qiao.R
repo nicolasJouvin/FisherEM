@@ -24,7 +24,7 @@ function(X,T,kernel){
 	# LASSO & SVD
 	Binit = eigen(ginv(cov(X))%*%(t(Hb)%*%Hb))$vect[,1:d]
 	if (is.complex(Binit)) Binit = matrix(Re(Binit),ncol=d,byrow=F)
-	B = Binit
+	if (is.null(dim(Binit))) {B = matrix(Binit)} else B = Binit
 	res.svd = svd(t(ginv(Rw))%*%t(Hb)%*%Hb%*%B)
 	A = res.svd$u %*% t(res.svd$v)	
 # browser()
@@ -33,6 +33,7 @@ function(X,T,kernel){
 		y = rbind(Hb %*% ginv(Rw) %*% A[,j],matrix(0,p,1))
 # 		res.enet = enet(W,y,lambda=1,intercept=FALSE)
 # 		B[,j] = predict.enet(res.enet,X,type="coefficients",mode="fraction",s=1)$coef
+# browser()
 		res.ls = lsfit(W,y,intercept=FALSE)
 		B[,j]  = res.ls$coef
 		}

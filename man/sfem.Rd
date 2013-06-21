@@ -1,15 +1,14 @@
-\name{fem}
-\alias{fem}
+\name{sfem}
+\alias{sfem}
 
 \title{
-The Fisher-EM algorithm
+The sparse Fisher-EM algorithm
 }
 \description{
-The Fisher-EM algorithm is a subspace clustering method for high-dimensional data. It is based on the Gaussian Mixture Model and on the idea that the data lives in a common and low dimensional subspace. An EM-like algorithm estimates both the discriminative subspace and the parameters of the mixture model.
-}
+The sparse Fisher-EM algorithm is a sparse version of the Fisher-EM algorithm. The sparsity is introduced within the F step which estimates the discriminative subspace. The sparsity on U is obtained by adding a l1 penalty to the optimization problem of the F step.}
 \usage{
-fem(Y,K=2:6,model='AkjB',method='reg',crit='icl',maxit=50,eps=1e-6,init='kmeans',
-	nstart=25,Tinit=c(),kernel='',disp=F)
+sfem(Y,K=2:6,model='AkjB',method='reg',crit='icl',maxit=50,eps=1e-6,init='kmeans',
+	nstart=25,Tinit=c(),kernel='',disp=F,l1=0.1,l2=0,nbit=2)
 }
 \arguments{
   \item{Y}{ 
@@ -44,8 +43,16 @@ A n x K matrix which contains posterior probabilities for initializing the algor
   \item{disp}{
 If true, some messages are printed during the clustering. Default is false.
 }
+  \item{l1}{
+The l1 penalty value (lasso) which has to be in [0,1]. A small value (close to 0) leads to a very sparse loading matrix whereas a value equals to 1 corresponds to no sparsity. Default is 0.1.
 }
-
+  \item{l2}{
+The l2 penalty value (elasticnet). Defaults is 0 (no regularization).
+}
+  \item{nbit}{
+The number of iterations for the lasso procedure. Defaults is 2.
+}
+}
 
 \value{
 A list is returned: 
@@ -66,6 +73,8 @@ A list is returned:
   \item{call}{The call of the function.}
   \item{plot}{Some information to pass to the plot.fem function.}
   \item{crit}{The model selction criterion used.}
+  \item{l1}{The l1 value.}
+  \item{l2}{The l2 value.}
 }
 \references{Charles Bouveyron and Camille Brunet (2012), Simultaneous model-based clustering and visualization in the Fisher discriminative subspace,
         Statistics and Computing, 22(1), 301-324.
@@ -77,11 +86,11 @@ A list is returned:
 Charles Bouveyron and Camille Brunet
 }
 
-\seealso{sfem, plot.fem, fem.ari, summary.fem}
+\seealso{fem, plot.fem, fem.ari, summary.fem}
 
 \examples{
 data(iris)
-res = fem(iris[,-5],K=2:5,model='AkB')
+res = sfem(iris[,-5],K=3,model='AkB',l1=seq(.01,.3,.05))
 summary(res)
 plot(res)
 fem.ari(res,as.numeric(iris[,5]))
