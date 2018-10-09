@@ -1,31 +1,27 @@
-\name{summary.fem}
-\alias{summary.fem}
+\name{print.fem}
+\alias{print.fem}
 
 \title{
-The summary function for 'fem' objects.
+The print function for 'fem' objects.
 }
 \description{
 This function summarizes 'fem' objects. It in particular indicates which DLM model has been chosen and displays the loading matrix 'U' if the original dimension is smaller than 10.
 }
 \usage{
- \method{summary}{fem}(object,...)
+ \method{print}{fem}(x,...)
 }
 
 \arguments{
-  \item{object}{
-The fem object.
-}
-  \item{...}{
-Additional options to pass to the summary function.
-}
+  \item{x}{The fem object.}
+  \item{...}{Additional options to pass to the summary function.}
 }
 
 \seealso{fem, sfem, fem.ari, plot.fem}
 
 \examples{
 data(iris)
-res = fem(iris[,-5],K=2:5,model='AkB')
-summary(res)
+res = fem(iris[,-5],K=3,model='DkBk',method='reg')
+res
 plot(res)
 fem.ari(res,as.numeric(iris[,5]))
 }

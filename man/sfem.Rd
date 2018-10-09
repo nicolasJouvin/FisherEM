@@ -7,8 +7,8 @@ The sparse Fisher-EM algorithm
 \description{
 The sparse Fisher-EM algorithm is a sparse version of the Fisher-EM algorithm. The sparsity is introduced within the F step which estimates the discriminative subspace. The sparsity on U is obtained by adding a l1 penalty to the optimization problem of the F step.}
 \usage{
-sfem(Y,K=2:6,model='AkjB',method='reg',crit='icl',maxit=50,eps=1e-6,init='kmeans',
-	nstart=25,Tinit=c(),kernel='',disp=F,l1=0.1,l2=0,nbit=2)
+sfem(Y,K=2:6,obj=NULL,model='AkjBk',method='reg',crit='icl',maxit=50,eps=1e-6,
+    init='kmeans',nstart=5,Tinit=c(),kernel='',disp=FALSE,l1=0.1,l2=0,nbit=2)
 }
 \arguments{
   \item{Y}{ 
@@ -17,6 +17,7 @@ The data matrix. Categorical variables and missing values are not allowed.
   \item{K}{
 An integer vector specifying the numbers of mixture components (clusters) among which the model selection criterion will choose the most appropriate number of groups. Default is 2:6.
 }
+\item{obj}{An object of class 'fem' previously learned with the 'fem' function which will be used as initialization of the sparse FisherEM algorithm.}
  \item{model}{A vector of discriminative latent mixture (DLM) models to fit. There are 12 different models: "DkBk", "DkB", "DBk", "DB", "AkjBk", "AkjB", "AkBk", "AkBk", "AjBk", "AjB", "ABk", "AB".  The option "all" executes the Fisher-EM algorithm on the 12 DLM models and select the best model according to the maximum value obtained by model selection criterion. 
 } 
  \item{method}{
@@ -76,11 +77,9 @@ A list is returned:
   \item{l1}{The l1 value.}
   \item{l2}{The l2 value.}
 }
-\references{Charles Bouveyron and Camille Brunet (2012), Simultaneous model-based clustering and visualization in the Fisher discriminative subspace,
-        Statistics and Computing, 22(1), 301-324.
+\references{Charles Bouveyron and Camille Brunet (2012), Simultaneous model-based clustering and visualization in the Fisher discriminative subspace, Statistics and Computing, 22(1), 301-324.
 
-	    Charles Bouveyron and Camille Brunet (2013), "Discriminative variable selection for clustering with the sparse Fisher-EM algorithm",
-        Computational Statistics, to appear.
+	    Charles Bouveyron and Camille Brunet (2014), "Discriminative variable selection for clustering with the sparse Fisher-EM algorithm", Computational Statistics, vol. 29(3-4), pp. 489-513.
 }
 \author{
 Charles Bouveyron and Camille Brunet
@@ -90,8 +89,8 @@ Charles Bouveyron and Camille Brunet
 
 \examples{
 data(iris)
-res = sfem(iris[,-5],K=3,model='AkB',l1=seq(.01,.3,.05))
-summary(res)
+res = sfem(iris[,-5],K=3,model='DkBk',l1=seq(.01,.3,.05))
+res
 plot(res)
 fem.ari(res,as.numeric(iris[,5]))
 }

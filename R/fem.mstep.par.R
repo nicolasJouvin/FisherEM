@@ -1,4 +1,4 @@
-fem.mstep <- function(Y,U,T,model,method){
+fem.mstep.par <- function(Y,U,T,model,method){
 	# 12 different submodels: [DkBk] ... [AkjBk]
 	# Initialization
 	Y = as.matrix(Y)
@@ -19,7 +19,7 @@ fem.mstep <- function(Y,U,T,model,method){
 
 	# Estimation
 	test = 0
-	for (k in 1:K){
+	fun <- function(k){
 		nk  = sum(T[,k])
 		if (nk ==0) stop("some classes become empty\n",call.=FALSE)
 		# Prior Probability

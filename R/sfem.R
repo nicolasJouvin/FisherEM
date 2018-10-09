@@ -1,10 +1,17 @@
-sfem <- function(Y,K=2:6,model='AkjB',method='reg',crit='icl',maxit=50,eps=1e-6,init='kmeans',nstart=25,Tinit=c(),kernel='',disp=F,l1=0.1,l2=0,nbit=2){
+sfem <- function(Y,K=2:6,obj=NULL,model='AkjBk',method='reg',crit='icl',maxit=50,eps=1e-6,init='kmeans',
+                 nstart=5,Tinit=c(),kernel='',disp=FALSE,l1=0.1,l2=0,nbit=2){
   call = match.call()
   if (max(l1)>1 || min(l1)<0 || max(l2)>1 || min(l2)<0) stop("Parameters l1 and l2 must be within [0,1]\n",call.=FALSE)
   else{
     bic = aic = icl = c()
     RES = list()
-    try(res0 <- fem(Y,K,init=init,nstart=nstart,maxit=maxit,eps=eps,Tinit=Tinit,model=model,kernel=kernel,method='reg',crit=crit))
+    if (is.null(obj)){
+      try(res0 <- fem(Y,K,init=init,nstart=nstart,maxit=maxit,eps=eps,Tinit=Tinit,
+                      model=model,kernel=kernel,method='reg',crit=crit))
+    } else{
+      if (class(obj) != 'fem') stop('An object of class "fem" is required!')
+      else res0 = obj
+    }
     for (i in 1:length(l1)){
       try(RES[[i]] <- fem.sparse(Y,res0$K,model=res0$model,maxit=15,eps=eps,Tinit=res0$P,l1=l1[i],l2=l2,nbit=nbit))
       try(bic[i] <- RES[[i]]$bic)

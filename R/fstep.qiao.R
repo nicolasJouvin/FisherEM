@@ -1,5 +1,4 @@
-fstep.qiao <-
-function(X,T,kernel){
+fstep.qiao <- function(X,T,kernel){
 	# Initialization
 	K = ncol(T)
 	p = ncol(X)

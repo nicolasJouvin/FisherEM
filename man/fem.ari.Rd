@@ -25,8 +25,8 @@ The second partition to compare (as vector).
 \seealso{fem, sfem, plot.fem, summary.fem}
 \examples{
 data(iris)
-res = fem(iris[,-5],K=2:5,model='AkB')
-summary(res)
+res = fem(iris[,-5],K=3,model='DkBk',method='reg')
+res
 plot(res)
 fem.ari(res,as.numeric(iris[,5]))
 }

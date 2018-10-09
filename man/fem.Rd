@@ -8,8 +8,8 @@ The Fisher-EM algorithm
 The Fisher-EM algorithm is a subspace clustering method for high-dimensional data. It is based on the Gaussian Mixture Model and on the idea that the data lives in a common and low dimensional subspace. An EM-like algorithm estimates both the discriminative subspace and the parameters of the mixture model.
 }
 \usage{
-fem(Y,K=2:6,model='AkjB',method='reg',crit='icl',maxit=50,eps=1e-6,init='kmeans',
-	nstart=25,Tinit=c(),kernel='',disp=F)
+fem(Y,K=2:6,model='AkjBk',method='svd',crit='icl',maxit=50,eps=1e-4,init='kmeans',
+                nstart=5,Tinit=c(),kernel='',disp=FALSE,mc.cores=(detectCores()-1))
 }
 \arguments{
   \item{Y}{ 
@@ -44,6 +44,7 @@ A n x K matrix which contains posterior probabilities for initializing the algor
   \item{disp}{
 If true, some messages are printed during the clustering. Default is false.
 }
+  \item{mc.cores}{The number of CPUs to use to fit in parallel the different models (only for non-Windows platforms). Default is the number of available cores minus 1.}
 }
 
 
@@ -67,11 +68,9 @@ A list is returned:
   \item{plot}{Some information to pass to the plot.fem function.}
   \item{crit}{The model selction criterion used.}
 }
-\references{Charles Bouveyron and Camille Brunet (2012), Simultaneous model-based clustering and visualization in the Fisher discriminative subspace,
-        Statistics and Computing, 22(1), 301-324.
+\references{Charles Bouveyron and Camille Brunet (2012), Simultaneous model-based clustering and visualization in the Fisher discriminative subspace, Statistics and Computing, 22(1), 301-324.
 
-	    Charles Bouveyron and Camille Brunet (2013), "Discriminative variable selection for clustering with the sparse Fisher-EM algorithm",
-        Computational Statistics, to appear.
+	    Charles Bouveyron and Camille Brunet (2014), "Discriminative variable selection for clustering with the sparse Fisher-EM algorithm", Computational Statistics, vol. 29(3-4), pp. 489-513.
 }
 \author{
 Charles Bouveyron and Camille Brunet
@@ -81,8 +80,15 @@ Charles Bouveyron and Camille Brunet
 
 \examples{
 data(iris)
-res = fem(iris[,-5],K=2:5,model='AkB')
-summary(res)
+res = fem(iris[,-5],K=3,model='DkBk',method='reg')
+res
 plot(res)
 fem.ari(res,as.numeric(iris[,5]))
+
+\donttest{
+res = fem(iris[,-5],K=2:6,model='all',method='svd')
+res
+plot(res)
+fem.ari(res,as.numeric(iris[,5]))
+}
 }

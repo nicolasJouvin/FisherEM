@@ -1,10 +1,13 @@
+old.par <- par(no.readonly = TRUE)
+palette(c("#A6CEE3", "#1F78B4", "#B2DF8A", "#33A02C", "#FB9A99", "#E31A1C", 
+          "#FDBF6F", "#FF7F00", "#CAB2D6", "#6A3D9A", "#FFFF99", "#B15928"))
 data(iris)
 Y  = iris[,-5]
 lbl= as.numeric(iris[,5])
 K  = 3
-set.seed(2)
+set.seed(12345)
 Tinit = t(rmultinom(150,1,c(rep(1/K,K))))
-U  = fem(Y,3,init='user',Tinit=Tinit,model='AkB',maxit=1,method='gs',eps=1e-3)$U
+U  = fem(Y,3,init='user',Tinit=Tinit,model='AkB',maxit=1,method='gs',eps=1e-3,disp=FALSE)$U
 cls1 = cls = max.col(Tinit)
 for (i in 1:15){
 	  # x11()
@@ -33,18 +36,19 @@ for (i in 1:15){
 	  yrange <- c(min2,max2)
 
 	  par(mar=c(3,3,1,1)) 
-	  plot(x,col=cls,pch=cls1,xlim=xrange, ylim=yrange,cex=1.5)
+	  plot(x,col=as.numeric(as.factor(cls)),pch=cls1,xlim=xrange, ylim=yrange,cex=1.5)
 	  # , xlim=xrange, ylim=yrange, xlab="", ylab="") 
 	  par(mar=c(0,3,1,1)) 
-	  barplot(xhist1$counts, axes=FALSE,col='lightgreen',ylim=c(0,topX), space=0) 
-	  barplot(xhist2$counts, axes=FALSE,col='gray', ylim=c(0,topX), space=0,add=T)
-	  barplot(xhist3$counts, axes=FALSE,col='darkblue', ylim=c(0,topX), space=0,add=T)
+	  barplot(xhist1$counts, axes=FALSE,col=1,ylim=c(0,topX), space=0) 
+	  barplot(xhist2$counts, axes=FALSE,col=2, ylim=c(0,topX), space=0,add=T)
+	  barplot(xhist3$counts, axes=FALSE,col=3, ylim=c(0,topX), space=0,add=T)
 	  par(mar=c(3,0,1,1)) 
-	  barplot(yhist1$counts, axes=FALSE,col='lightgreen', xlim=c(0,topY), space=0, horiz=TRUE) 
-	  barplot(yhist2$counts, axes=FALSE,col='gray', xlim=c(0,topY), space=0, horiz=TRUE,add=T) 
-	  barplot(yhist3$counts, axes=FALSE,col='darkblue', xlim=c(0,topY), space=0, horiz=TRUE,add=T) 
-	  res = fem(Y,3,init='user',Tinit=Tinit,model='AkB',maxit=1,method='gs',eps=1e-3)
+	  barplot(yhist1$counts, axes=FALSE,col=1, xlim=c(0,topY), space=0, horiz=TRUE) 
+	  barplot(yhist2$counts, axes=FALSE,col=2, xlim=c(0,topY), space=0, horiz=TRUE,add=T) 
+	  barplot(yhist3$counts, axes=FALSE,col=3, xlim=c(0,topY), space=0, horiz=TRUE,add=T) 
+	  res = fem(Y,3,init='user',Tinit=Tinit,model='AkB',maxit=1,method='gs',eps=1e-3,disp=FALSE)
 	  Tinit = res$P
 	  cls1 = cls = res$cls
 	  U = res$U
 }
+par(old.par)

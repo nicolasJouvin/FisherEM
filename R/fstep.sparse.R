@@ -1,8 +1,7 @@
 fstep.sparse <-
 function(X,T,lambda,nbit,l2){
 
-    if (length(lambda)>1) { cat('\n','The user needs to enter a single figure comprised between 0 and 1','\n')
-			    break}
+    if (length(lambda)>1) stop('The user needs to enter a single figure comprised between 0 and 1')
 # 	require('lars')
 # 	require('elasticnet')
 	# Initialization
