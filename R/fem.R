@@ -18,53 +18,55 @@ fem <- function(Y,K=2:6,model='AkjBk',method='svd',crit='icl',maxit=50,eps=1e-4,
   if (length(model)==1) if (model=='all') model = c('DkBk','DkB','DBk','DB','AkjBk','AkjB','AkBk','AkB','AB')
   if (sum(apply(Y,2,var) == 0) > 0) stop("Some variables have zero variance. Please remove them and try again.\n",call.=FALSE)
   
-  if (length(K) > 1 | length(model) >1 | nstart > 1 | Sys.info()[['sysname']] != 'Windows'){
-    res = fem.main(Y=Y,K=K,model=model,init=init,nstart=nstart,maxit=maxit,eps=eps,Tinit=Tinit,
-                   kernel=kernel,method=method)
-    res$call = call
-    res$crit = crit
-    res$critValue = switch(crit, bic = res$bic, aic = res$aic, icl = res$icl)
-    res$allCriteria = NULL
-    res$allResults = NULL
+  # Run FEM depending on Windows or not (allows parallel computing)
+  if (Sys.info()[['sysname']] == 'Windows' | mc.cores == 1){
+    prms = expand.grid(model=model,K=K)
+    RES = list()
+    for (i in 1:nrow(prms)){
+      RES[[i]] = fem.main(Y=Y,K=prms$K[i],model=prms$model[i],init=init,nstart=nstart,maxit=maxit,
+                          eps=eps,Tinit=Tinit,kernel=kernel,method=method)
+    }
   }
   else {
     prms = expand.grid(model=model,K=K)
     MoreArgs = list(Y=Y,init=init,nstart=nstart,maxit=maxit,eps=eps,Tinit=Tinit,kernel=kernel,method=method)
     RES = do.call(mcmapply, c(list(FUN="fem.main",MoreArgs=MoreArgs,mc.cores=mc.cores,
                                    mc.silent=TRUE,mc.preschedule=FALSE),prms))
-    
-    if (is.matrix(RES)){ # Parallization without errors (output is a matrix)
-      bic = unlist(apply(RES,2,function(x){if (is.list(x)){x$bic} else NA})) 
-      aic = unlist(apply(RES,2,function(x){if (is.list(x)){x$bic} else NA}))
-      icl = unlist(apply(RES,2,function(x){if (is.list(x)){x$bic} else NA}))
-      comp = unlist(apply(RES,2,function(x){if (is.list(x)){x$comp} else NA}))
-      loglik = unlist(apply(RES,2,function(x){if (is.list(x)){x$loglik} else NA}))
-      if (crit=='bic'){ id_max = which.max(bic); crit_max = bic[id_max]}
-      if (crit=='aic'){ id_max = which.max(aic); crit_max = aic[id_max]}
-      if (crit=='icl'){ id_max = which.max(icl); crit_max = icl[id_max]}
-    } 
-    else{ # Parallization with errors (output is a list)
-      bic = unlist(lapply(RES,function(x){if(is.list(x)){x$bic} else{-Inf}}))
-      aic = unlist(lapply(RES,function(x){if(is.list(x)){x$aic} else{-Inf}}))
-      icl = unlist(lapply(RES,function(x){if(is.list(x)){x$icl} else{-Inf}}))
-      comp = unlist(lapply(RES,function(x){if(is.list(x)){x$comp} else{-Inf}}))
-      loglik = unlist(lapply(RES,function(x){if(is.list(x)){x$loglik} else{-Inf}}))
-      if (crit=='bic'){ id_max = which.max(bic); crit_max = bic[id_max]}
-      if (crit=='aic'){ id_max = which.max(aic); crit_max = aic[id_max]}
-      if (crit=='icl'){ id_max = which.max(icl); crit_max = icl[id_max]}
-    }
-    
-    nm = length(model)
-    allCriteria = data.frame(model=prms$model,K=prms$K,comp=comp,loglik=loglik,bic=bic,aic=aic,icl=icl)
-    if (is.matrix(RES)) {res = RES[,id_max]}  else res = RES[[id_max]]
-    res$aic = res$bic = res$icl = NULL
-    res$model =  as.character(res$model)
-    res$allCriteria = allCriteria
-    res$crit = crit
-    res$critValue = unlist(crit_max)
-    res$allResults = RES
-    res$call = call
   }
+    
+  #Post-treatment of results
+  if (is.matrix(RES)){ # Parallization without errors (output is a matrix)
+    bic = unlist(apply(RES,2,function(x){if (is.list(x)){x$bic} else NA})) 
+    aic = unlist(apply(RES,2,function(x){if (is.list(x)){x$bic} else NA}))
+    icl = unlist(apply(RES,2,function(x){if (is.list(x)){x$bic} else NA}))
+    comp = unlist(apply(RES,2,function(x){if (is.list(x)){x$comp} else NA}))
+    loglik = unlist(apply(RES,2,function(x){if (is.list(x)){x$loglik} else NA}))
+    if (crit=='bic'){ id_max = which.max(bic); crit_max = bic[id_max]}
+    if (crit=='aic'){ id_max = which.max(aic); crit_max = aic[id_max]}
+    if (crit=='icl'){ id_max = which.max(icl); crit_max = icl[id_max]}
+  } 
+  else{ # Parallization with errors (output is a list)
+    bic = unlist(lapply(RES,function(x){if(is.list(x)){x$bic} else{-Inf}}))
+    aic = unlist(lapply(RES,function(x){if(is.list(x)){x$aic} else{-Inf}}))
+    icl = unlist(lapply(RES,function(x){if(is.list(x)){x$icl} else{-Inf}}))
+    comp = unlist(lapply(RES,function(x){if(is.list(x)){x$comp} else{-Inf}}))
+    loglik = unlist(lapply(RES,function(x){if(is.list(x)){x$loglik} else{-Inf}}))
+    if (crit=='bic'){ id_max = which.max(bic); crit_max = bic[id_max]}
+    if (crit=='aic'){ id_max = which.max(aic); crit_max = aic[id_max]}
+    if (crit=='icl'){ id_max = which.max(icl); crit_max = icl[id_max]}
+  }
+  nm = length(model)
+  allCriteria = data.frame(model=prms$model,K=prms$K,comp=comp,loglik=loglik,bic=bic,aic=aic,icl=icl)
+  if (is.matrix(RES)) {res = RES[,id_max]}  else res = RES[[id_max]]
+  res$aic = res$bic = res$icl = NULL
+  res$model =  as.character(res$model)
+  res$allCriteria = allCriteria
+  res$crit = crit
+  res$critValue = unlist(crit_max)
+  res$allResults = RES
+  res$call = call
+    
+  # Display and return results
   if (disp) cat('The selected model is',res$model,'with K =',res$K,'(',crit,'=',res$critValue,')\n')
   class(res)='fem'
   res

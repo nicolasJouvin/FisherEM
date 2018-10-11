@@ -7,15 +7,18 @@ plot.fem <- function(x,frame=0,crit=c(),...){
 
   # Model selection
   if ((frame==0 || frame==1) & (length(x$allCriteria$K)>1 || length(x$allCriteria$models)>1)){
-    K = x$allCriteria$K; models = x$allCriteria$models
+    K = x$allCriteria$K; models = x$allCriteria$model
     if (length(crit)==0) crit = x$crit
     if (crit=='bic') val = x$allCriteria$bic; if (crit=='aic') val = x$allCriteria$aic; if (crit=='icl') val = x$allCriteria$icl 
     val[val==-Inf] = NA
     if (length(models)>1){ 
-      matplot(K,val,type='l',xlab='K',ylab=crit,col=1:length(models),lty=1:length(models),
-              main='Selection of the number of groups',...)
-      legend('bottomleft',models,col=1:length(models),lty=1:length(models),
-             ncol=round(length(models)/3),cex=0.8,...)
+      plot(K,val,type='n',xlab='K',ylab=crit,main='Model selection')
+      for (m in 1:length(levels(models))){
+        modl = levels(models)[m]
+        lines(K[models==modl],val[models==modl],col=m,lty=m,lwd=2)
+      }
+      legend('bottomleft',levels(models),col=1:length(models),lty=1:length(models),
+             ncol=round(length(models)/3),cex=1)
     }
     else plot(K,val,type='b',xlab='K',ylab=crit,col=1:length(models),lty=1:length(models),main='Selection of the number of groups',...)
     if (x$call[[1]]=='sfem'){
@@ -90,7 +93,7 @@ plot.fem <- function(x,frame=0,crit=c(),...){
   # Plot of the group means
   if (frame==0) Sys.sleep(0.5)
   if (frame==0 || frame==4){
-    matplot(t(x$mean),type='l',lwd=1.5,xaxt='n')
+    matplot(t(x$mean),type='l',lwd=1.5,xaxt='n',ylab='')
     axis(1,at=1:ncol(Y),labels=colnames(Y),las=2)
     title(main='Group means')
     legend('bottomleft',paste('Group ',1:max(x$cls),sep=''),col=1:max(x$cls),lty=1:max(x$cls),

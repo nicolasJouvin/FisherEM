@@ -77,9 +77,9 @@ A list is returned:
   \item{l1}{The l1 value.}
   \item{l2}{The l2 value.}
 }
-\references{Charles Bouveyron and Camille Brunet (2012), Simultaneous model-based clustering and visualization in the Fisher discriminative subspace, Statistics and Computing, 22(1), 301-324.
+\references{Charles Bouveyron and Camille Brunet (2012), Simultaneous model-based clustering and visualization in the Fisher discriminative subspace, Statistics and Computing, 22(1), 301-324 <doi:10.1007/s11222-011-9249-9>.
 
-	    Charles Bouveyron and Camille Brunet (2014), "Discriminative variable selection for clustering with the sparse Fisher-EM algorithm", Computational Statistics, vol. 29(3-4), pp. 489-513.
+	    Charles Bouveyron and Camille Brunet (2014), "Discriminative variable selection for clustering with the sparse Fisher-EM algorithm", Computational Statistics, vol. 29(3-4), pp. 489-513 <10.1007/s00180-013-0433-6>.
 }
 \author{
 Charles Bouveyron and Camille Brunet

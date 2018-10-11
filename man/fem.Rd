@@ -68,9 +68,9 @@ A list is returned:
   \item{plot}{Some information to pass to the plot.fem function.}
   \item{crit}{The model selction criterion used.}
 }
-\references{Charles Bouveyron and Camille Brunet (2012), Simultaneous model-based clustering and visualization in the Fisher discriminative subspace, Statistics and Computing, 22(1), 301-324.
+\references{Charles Bouveyron and Camille Brunet (2012), Simultaneous model-based clustering and visualization in the Fisher discriminative subspace, Statistics and Computing, 22(1), 301-324 <doi:10.1007/s11222-011-9249-9>.
 
-	    Charles Bouveyron and Camille Brunet (2014), "Discriminative variable selection for clustering with the sparse Fisher-EM algorithm", Computational Statistics, vol. 29(3-4), pp. 489-513.
+	    Charles Bouveyron and Camille Brunet (2014), "Discriminative variable selection for clustering with the sparse Fisher-EM algorithm", Computational Statistics, vol. 29(3-4), pp. 489-513 <10.1007/s00180-013-0433-6>.
 }
 \author{
 Charles Bouveyron and Camille Brunet
@@ -86,6 +86,8 @@ plot(res)
 fem.ari(res,as.numeric(iris[,5]))
 
 \donttest{
+# Fit several models and numbers of groups (use by default on non-Windows
+# platforms the parallel computing).
 res = fem(iris[,-5],K=2:6,model='all',method='svd')
 res
 plot(res)
