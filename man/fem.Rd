@@ -9,7 +9,8 @@ The Fisher-EM algorithm is a subspace clustering method for high-dimensional dat
 }
 \usage{
 fem(Y,K=2:6,model='AkjBk',method='svd',crit='icl',maxit=50,eps=1e-4,init='kmeans',
-                nstart=5,Tinit=c(),kernel='',disp=FALSE,mc.cores=(detectCores()-1))
+                nstart=5,Tinit=c(),kernel='',disp=FALSE,mc.cores=(detectCores()-1),
+                subset=NULL)
 }
 \arguments{
   \item{Y}{ 
@@ -21,7 +22,7 @@ An integer vector specifying the numbers of mixture components (clusters) among 
  \item{model}{A vector of discriminative latent mixture (DLM) models to fit. There are 12 different models: "DkBk", "DkB", "DBk", "DB", "AkjBk", "AkjB", "AkBk", "AkBk", "AjBk", "AjB", "ABk", "AB".  The option "all" executes the Fisher-EM algorithm on the 12 DLM models and select the best model according to the maximum value obtained by model selection criterion. 
 } 
  \item{method}{
-The method use for the fitting of the projection matrix associated to the discriminative subspace. Three methods are available: 'svd', 'reg' and 'gs'. The 'reg' method is the default.
+The method used for the fitting of the projection matrix associated to the discriminative subspace. Three methods are available: 'gs' (Gram-Schmidt, the original proposition), 'svd' (based on SVD, faster) and 'reg' (the Fisher criterion is rewritten as a regression problem). The 'svd' method is the default method since it is the fastest one on most data sets.
 }
    \item{crit}{The model selection criterion to use for selecting the most appropriate model for the data. There are 3 possibilities: "bic", "aic" or "icl". Default is "icl".
 }
@@ -45,8 +46,9 @@ A n x K matrix which contains posterior probabilities for initializing the algor
 If true, some messages are printed during the clustering. Default is false.
 }
   \item{mc.cores}{The number of CPUs to use to fit in parallel the different models (only for non-Windows platforms). Default is the number of available cores minus 1.}
-}
 
+\item{subset}{A positive integer defining the size of the subsample, default is NULL. In case of large data sets, it might be useful to fit a FisherEM model on a subsample of the data, and then use this model to predict cluster assignments for the whole data set. Notice that in, such a case, likelihood values and model selection criteria are computed for the subsample and not the whole data set.}
+}
 
 \value{
 A list is returned: 
@@ -70,27 +72,30 @@ A list is returned:
 }
 \references{Charles Bouveyron and Camille Brunet (2012), Simultaneous model-based clustering and visualization in the Fisher discriminative subspace, Statistics and Computing, 22(1), 301-324 <doi:10.1007/s11222-011-9249-9>.
 
-	    Charles Bouveyron and Camille Brunet (2014), "Discriminative variable selection for clustering with the sparse Fisher-EM algorithm", Computational Statistics, vol. 29(3-4), pp. 489-513 <10.1007/s00180-013-0433-6>.
+Charles Bouveyron and Camille Brunet (2014), "Discriminative variable selection for clustering with the sparse Fisher-EM algorithm", Computational Statistics, vol. 29(3-4), pp. 489-513 <10.1007/s00180-013-0433-6>.
 }
+
 \author{
-Charles Bouveyron and Camille Brunet
+Charles Bouveyron, Camille Brunet & Nicolas Jouvin.
 }
 
 \seealso{sfem, plot.fem, fem.ari, summary.fem}
 
 \examples{
 data(iris)
-res = fem(iris[,-5],K=3,model='DkBk',method='reg')
+res = fem(iris[,-5],K=3,model='AkBk',method='gs')
 res
 plot(res)
-fem.ari(res,as.numeric(iris[,5]))
+fem.ari(res,as.numeric(iris$Species))
+table(iris$Species,res$cls)
 
 \donttest{
 # Fit several models and numbers of groups (use by default on non-Windows
 # platforms the parallel computing).
-res = fem(iris[,-5],K=2:6,model='all',method='svd')
+res = fem(iris[,-5],K=2:6,model='all',method='gs')
 res
 plot(res)
-fem.ari(res,as.numeric(iris[,5]))
+fem.ari(res,as.numeric(iris$Species))
+table(iris$Species,res$cls)
 }
 }

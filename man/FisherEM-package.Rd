@@ -18,7 +18,7 @@ LazyLoad: \tab yes\cr
 
 }
 \author{ 
-Charles Bouveyron and Camille Brunet
+Charles Bouveyron, Camille Brunet & Nicolas Jouvin.
 
 Maintainer: Charles Bouveyron <charles.bouveyron@gmail.com>
 }

@@ -1,7 +1,7 @@
 fem <- function(Y,K=2:6,model='AkjBk',method='svd',crit='icl',maxit=50,eps=1e-4,init='kmeans',
-                nstart=5,Tinit=c(),kernel='',disp=FALSE,mc.cores=(detectCores()-1)){
+                nstart=5,Tinit=c(),kernel='',disp=FALSE,mc.cores=(detectCores()-1),subset=NULL){
   call = match.call()
-  MOD = c('DkBk','DkB','DBk','DB','AkjBk','AkjB','AkBk','AkB','AB','all')
+  MOD = c('DkBk','DkB','DBk','DB','AkjBk','AkjB','AkBk','AkB','AjB','AjBk', 'ABk', 'AB','all')
   MET = c('svd','reg','gs')
   KER = c('','sigmoid','linear','rbf')
   CRI = c('bic','aic','icl','sh')
@@ -15,8 +15,15 @@ fem <- function(Y,K=2:6,model='AkjBk',method='svd',crit='icl',maxit=50,eps=1e-4,
   if (init=='hclust' & nrow(Y)>5000) stop('Too much data for this initialization.\n',call.=FALSE)
   # if (K>=ncol(Y)) stop("K must be strictly less than the number of variables",call.=FALSE)
   if (nrow(Y)<=ncol(Y) & method=='gs') stop("n<<p case: use method REG or SVD.\n",call.=FALSE)
-  if (length(model)==1) if (model=='all') model = c('DkBk','DkB','DBk','DB','AkjBk','AkjB','AkBk','AkB','AB')
+  if (length(model)==1) if (model=='all') model = MOD[MOD!='all']
   if (sum(apply(Y,2,var) == 0) > 0) stop("Some variables have zero variance. Please remove them and try again.\n",call.=FALSE)
+  
+  if (!is.null(subset)) {
+    Yfull = Y
+    sel =  sample(nrow(Y),subset)
+    Y = Y[sel,]
+    if (init=='user') Tinit = Tinit[sel,]
+  }
   
   # Run FEM depending on Windows or not (allows parallel computing)
   if (Sys.info()[['sysname']] == 'Windows' | mc.cores == 1){
@@ -65,6 +72,14 @@ fem <- function(Y,K=2:6,model='AkjBk',method='svd',crit='icl',maxit=50,eps=1e-4,
   res$critValue = unlist(crit_max)
   res$allResults = RES
   res$call = call
+  
+  if (!is.null(subset)) {
+    browser()
+    prms = list(mean=res$mean,my=res$my,K=res$K,prop=res$prop,D=res$D,b=res$b)
+    resFull = fem.estep(prms,Yfull,res$U)
+    res$P = resFull$T
+    res$cls  = max.col(resFull$T)
+  }
     
   # Display and return results
   if (disp) cat('The selected model is',res$model,'with K =',res$K,'(',crit,'=',res$critValue,')\n')
