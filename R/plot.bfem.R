@@ -91,15 +91,21 @@ plot_bound = function(res) {
 
 
 plot_crit = function(res, crit = NULL) {
+  color_palette = c("#A6CEE3", "#1F78B4", "#B2DF8A", "#33A02C", "#FB9A99", "#E31A1C", 
+    "#FDBF6F", "#FF7F00", "#CAB2D6", "#6A3D9A", "#FFFF99", "#B15928")
+  shape_palette = factor(1:12)
   if(is.null(crit)) crit = res$crit
   df = res$allCriteria
-  df$K = factor(df$K)
+  df$K = as.integer(df$K)
   gg = ggplot2::ggplot(df, 
                        ggplot2::aes_string(x="K", y=crit, shape = "model", 
                                   linetype = "model", col = "model")) +
     ggplot2::geom_point() +
     ggplot2::geom_line() +
-    ggplot2::ylab(base::casefold(crit, upper = T))
+    ggplot2::ylab(base::casefold(crit, upper = T)) +
+    scale_shape_manual(values = shape_palette) +
+    scale_linetype_manual(values = shape_palette) +
+    scale_color_manual(values = color_palette)
   
   gg
 }

@@ -1,3 +1,4 @@
+
 bfem <- function(Y, K=2:6, model='AkjBk', method='svd', crit='icl', maxit.em=100,
                 eps.em=1e-6, maxit.ve=3, eps.ve=1e-4, lambda = 1e3, emp.bayes=T,
                 init='kmeans', nstart=10, Tinit=c(), kernel='', 

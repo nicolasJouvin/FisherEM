@@ -54,3 +54,13 @@ test_that("test all models", {
   expect_equal(dim(res.bfem$proj), c(n, d))
   expect_equal(length(res.bfem$elbos), res.bfem$n_ite+1)
 })
+
+test_that("test 3 models, K grid", {
+  res.bfem = bfem(Y, K = 2:6, model=c('DkBk', 'AkjBk', 'AB'), init = 'kmeans', nstart = 1, 
+                  maxit.em = 10, eps.em = 1e-3, maxit.ve = 3)
+  expect_equal(dim(res.bfem$var_param$Varmeank), c(d, K))
+  expect_equal(dim(res.bfem$var_param$Varcovk), c(res.bfem$d, res.bfem$d, K))
+  expect_equal(dim(res.bfem$U), c(p, res.bfem$d))
+  expect_equal(dim(res.bfem$proj), c(n, res.bfem$d))
+  expect_equal(length(res.bfem$elbos), res.bfem$n_ite+1)
+})
