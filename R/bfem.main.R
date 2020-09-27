@@ -138,7 +138,7 @@ bfem.main <- function(Y,K,init,nstart,control_bfem,Tinit,model,kernel,method,lam
   hypers = list(lambda = lambda, nu = nu)
   proj = Y %*% U
   rownames(U) = colNames
-  final_elbo = tail(Lobs, 1)
+  final_elbo = utils::tail(Lobs, 1)
   crit = bfem.criteria(Y, final_elbo, U, prms, tau, model, hypers, var_param, method)
   return(list(K = K, Tinit = Tinit, d = d, cls = cls, P = tau,
               elbos = Lobs, loglik=final_elbo, n_ite = i,

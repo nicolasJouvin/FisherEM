@@ -1,3 +1,9 @@
+## For CRAN check ...
+## https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when/12429344#12429344
+utils::globalVariables(names = c('elbo', 'iteration', 'Cluster',
+                                 'x', 'y', '.id', 'sigma', 'V1', 'V2'))
+
+
 #' Plotting function
 #'
 #' Utility function to plot the results of the BFEM algorithm. The S3 plot
@@ -73,7 +79,8 @@ plot_subspace <- function(res, alpha_levels = c(0.95), plot.dims = c(1,2),
     return(NULL)
   }
   if(ndim == 2) {
-    gg = ggplot2::ggplot(df, aes(x = V1, y = V2, col = Cluster, shape = Cluster))
+    gg = ggplot2::ggplot(df, 
+                         ggplot2::aes(x = V1, y = V2, col = Cluster, shape = Cluster))
     
     if (show.uncertainty) {
       # inspired from Mclust uncertainty, adapted for ggplot2
@@ -84,7 +91,7 @@ plot_subspace <- function(res, alpha_levels = c(0.95), plot.dims = c(1,2),
       b <- bubble(u, cex = cex.uncertainty * c(size, size+2), alpha = c(1, 0.7))    
       
       gg = gg + 
-        geom_point(size = b$cex,
+        ggplot2::geom_point(size = b$cex,
                    alpha = max(b$alpha) - b$alpha + min(b$alpha))
     } else {
       gg = gg +
@@ -107,7 +114,8 @@ plot_subspace <- function(res, alpha_levels = c(0.95), plot.dims = c(1,2),
         
         contour_data$Cluster = as.factor(k)
         gg = gg +
-          ggplot2::geom_path(data=contour_data, aes(x, y, group = .id, col = Cluster), 
+          ggplot2::geom_path(data=contour_data, 
+                             ggplot2::aes(x, y, group = .id, col = Cluster), 
                     linetype='dotdash',
                     alpha = rep(length(alpha_levels):1,each = 100)/1.5 ,
                     show.legend = F)
@@ -116,7 +124,8 @@ plot_subspace <- function(res, alpha_levels = c(0.95), plot.dims = c(1,2),
       means = as.data.frame(t(res$var_param$Varmeank))
       means$Cluster = as.factor(1:res$K)
       gg = gg + 
-        ggplot2::geom_point(data=means, aes(x = V1, y = V2),shape = 3, size = 5, show.legend = F)
+        ggplot2::geom_point(data=means, 
+                            ggplot2::aes(x = V1, y = V2),shape = 3, size = 5, show.legend = F)
     }
     
     # Colorblind friendly palette
@@ -135,7 +144,7 @@ plot_subspace <- function(res, alpha_levels = c(0.95), plot.dims = c(1,2),
 plot_bound = function(res) {
   elbos = res$elbos
   df = data.frame(iteration = 1:length(elbos), elbo = elbos)
-  gg = ggplot2::ggplot(df, aes(x=iteration, y=elbo)) +
+  gg = ggplot2::ggplot(df, ggplot2::aes(x=iteration, y=elbo)) +
     ggplot2::geom_point(size=1.5) + 
     ggplot2::geom_line(size=1, alpha = 0.7, linetype='dashed') +
     ggplot2::xlab('Iteration') + ggplot2::ylab('Elbo') +

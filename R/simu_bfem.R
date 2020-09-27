@@ -42,7 +42,7 @@ simu.Chang1983 <- function(n = 300) {
   p = 15
   
   cte = matrix(rep(0.95 - 0.05* (1:p), n), nrow = n, byrow = T)
-  Z = rbinom(n=n, size=1, prob = 0.2)
+  Z = stats::rbinom(n=n, size=1, prob = 0.2)
   
   mu = rep(0, p)
   Sigma = diag(1, p)
