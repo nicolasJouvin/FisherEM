@@ -143,7 +143,8 @@ bfem.main <- function(Y,K,init,nstart,control_bfem,Tinit,model,kernel,method,lam
   return(list(K = K, Tinit = Tinit, d = d, cls = cls, P = tau,
               elbos = Lobs, loglik=final_elbo, n_ite = i,
               U = U, param = param, var_param = var_param, proj = proj,
-              model = model, aic=crit$aic, bic=crit$bic, icl=crit$icl, comp=crit$comp,
+              model = model, aic=crit$aic, bic=crit$bic, icl=crit$icl,
+              comp=crit$comp,
               hypers = hypers,
               call = call)
          )

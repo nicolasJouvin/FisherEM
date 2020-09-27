@@ -1,4 +1,109 @@
 
+#' The Bayesian Fisher-EM algorithm.
+#'
+#' The Bayesian Fisher-EM algorithm is built on a Bayesian formulation of the
+#' model used in the \code{\link{fem}}. It is a subspace clustering method for
+#' high-dimensional data. It is based on a Gaussian Mixture Model and on the
+#' idea that the data lives in a common and low dimensional subspace. A VEM-like
+#' algorithm estimates both the discriminative subspace and the parameters of
+#' the mixture model.
+#'
+#' @param Y The data matrix. Categorical variables and missing values are not
+#'   allowed.
+#' @param K An integer vector specifying the numbers of mixture components
+#'   (clusters) among which the model selection criterion will choose the most
+#'   appropriate number of groups. Default is 2:6.
+#' @param model A vector of Bayesian discriminative latent mixture (BDLM) models
+#'   to fit. There are 12 different models: "DkBk", "DkB", "DBk", "DB", "AkjBk",
+#'   "AkjB", "AkBk", "AkBk", "AjBk", "AjB", "ABk", "AB".  The option "all"
+#'   executes the Fisher-EM algorithm on the 12 DLM models and select the best
+#'   model according to the maximum value obtained by model selection criterion.
+#'   Similar to \code{\link{fem}}
+#' @param method The method used for the fitting of the projection matrix
+#'   associated to the discriminative subspace. Three methods are available:
+#'   'gs' (Gram-Schmidt, the original proposition), 'svd' (based on SVD, faster)
+#'   and 'reg' (the Fisher criterion is rewritten as a regression problem). The
+#'   'svd' method is the default method since it is the fastest one on most data
+#'   sets.
+#' @param crit The model selection criterion to use for selecting the most
+#'   appropriate model for the data. There are 3 possibilities: "bic", "aic" or
+#'   "icl". Default is "icl".
+#' @param maxit.em The maximum number of iterations before the stop of the main
+#'   EM loop in the BFEM algorithm.
+#' @param eps.em The threshold value for the likelihood differences (Aitken's
+#'   criterion) to stop the BFEM algorithm.
+#' @param maxit.ve The maximum number of iterations before the stop of the
+#'   VE-step loop (fixed point algorithm)
+#' @param eps.ve The threshold value for the likelihood differences (Aitken's
+#'   criterion) to stop the BFEM algorithm.
+#' @param lambda The initial value for the variance of the Gaussian prior on the
+#'   means in the latent space.
+#' @param emp.bayes Should the hyper-parameters (mean and variance) of the prior be updated ? Default to TRUE.
+#' @param init The initialization method for the Fisher-EM algorithm. There are
+#'   4 options: "random" for a randomized initialization, "kmeans" for an
+#'   initialization by the kmeans algorithm, "hclust" for hierarchical
+#'   clustering initialization or "user" for a specific initialization through
+#'   the parameter "Tinit". Default is "kmeans". Notice that for "kmeans" and
+#'   "random", several initializations are asked and the initialization
+#'   associated with the highest likelihood is kept (see "nstart").
+#' @param nstart The number of restart if the initialization is "kmeans" or
+#'   "random". In such a case, the initialization associated with the highest
+#'   likelihood is kept.
+#' @param Tinit A n x K matrix which contains posterior probabilities for
+#'   initializing the algorithm (each line corresponds to an individual).
+#' @param kernel It enables to deal with the n < p problem. By default, no
+#'   kernel (" ") is used. But the user has the choice between 3 options for the
+#'   kernel: "linear", "sigmoid" or "rbf".
+#' @param disp If true, some messages are printed during the clustering. Default
+#'   is false.
+#' @param mc.cores The number of CPUs to use to fit in parallel the different
+#'   models (only for non-Windows platforms). Default is the number of available
+#'   cores minus 1.
+#' @param subset A positive integer defining the size of the subsample, default
+#'   is NULL. In case of large data sets, it might be useful to fit a FisherEM
+#'   model on a subsample of the data, and then use this model to predict
+#'   cluster assignments for the whole data set. Notice that in, such a case,
+#'   likelihood values and model selection criteria are computed for the
+#'   subsample and not the whole data set.
+#'
+#' @return A list is returned: \itemize{  
+#' \item K - The number of groups.
+#' \item cls - the group membership of each individual estimated by the BFEM algorithm 
+#' \item Tinit - The initial posterior probalities used to start the algorithm 
+#' \item d - the dimension of the discriminative subspace 
+#' \item elbos - A vector containing the evolution of the variational lower bound at each iteration 
+#' \item loglik - The final value of the variational lower bound 
+#' \item n_ite - The number of iteration until convergence of the BFEM algorithm 
+#' \item P - the posterior probabilities of each individual for each group 
+#' \item U - The loading matrix which determines the orientation of the discriminative subspace 
+#' \item param - A list containing the estimated parameters of the model 
+#' \itemize{
+#' \item PI - The mixture proportions 
+#' \item Sigmak - An array containing estimated cluster covariances in the latent space 
+#' \item Beta - The noise variance in each cluster 
+#' }
+#' \item var_param - A list containing the variational distribution parameters
+#' \itemize{
+#' \item logtau - A n x K matrix containing the logarithm of the multinomial parameters of q(Z) 
+#' \item Varmeank - A K x d matrix containing the variational mean 
+#' \item Varcovk -  A d x d x K array containing the variational covariance matrices.
+#' }
+#' \item proj - The projected data on the discriminative subspace. 
+#' \item aic - The value of the Akaike information criterion 
+#' \item bic - The value of the Bayesian information criterion 
+#' \item icl - The value of the integrated completed likelihood criterion 
+#' \item method - The method used in the F-step 
+#' \item call - The call of the function 
+#' \item crit - The model selection criterion used }
+#' @export
+#' @seealso \code{\link{fem}}
+#' @examples
+#' data(iris)
+#' res = fem(iris[,-5],K=3,model='AkBk',method='gs')
+#' res
+#' plot(res)
+#' fem.ari(res,as.numeric(iris$Species))
+#' table(iris$Species,res$cls)
 bfem <- function(Y, K=2:6, model='AkjBk', method='svd', crit='icl', maxit.em=100,
                 eps.em=1e-6, maxit.ve=3, eps.ve=1e-4, lambda = 1e3, emp.bayes=T,
                 init='kmeans', nstart=10, Tinit=c(), kernel='', 
