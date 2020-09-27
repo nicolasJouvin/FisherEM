@@ -13,7 +13,7 @@ test_that("Plot bound", {
 })
 
 test_that("Plot crit", {
-  expect_true(is.ggplot(plot.bfem(res.bfem, type = "crit", crit = 'bic')))
-  expect_true(is.ggplot(plot.bfem(res.bfem, type = "crit", crit = 'icl')))
-  expect_true(is.ggplot(plot.bfem(res.bfem, type = "crit", crit = 'aic')))
+  expect_true(is.ggplot(plot.bfem(res.bfem, type = "criterion", crit = 'bic')))
+  expect_true(is.ggplot(plot.bfem(res.bfem, type = "criterion", crit = 'icl')))
+  expect_true(is.ggplot(plot.bfem(res.bfem, type = "criterion", crit = 'aic')))
 })
