@@ -29,11 +29,9 @@ bfem.vestep <- function(Y, U, prms, nu, lambda, logtau,
     ve.count = ve.count + 1
   }
   if (sum(diff(ve.elbos) >= -1e-10) != length(ve.elbos) - 1) {
-    #message('Elbo decrease : ', diff(ve.elbos))
-    warning(paste0('The elbo is decreasing in VE-step'))
+    message('Elbo decrease : ', diff(ve.elbos))
+    # warning(paste0('The elbo is decreasing in VE-step'))
   }
-  # . Diff and total count : ',
-  #                diff(ve.elbos), ' and ', ve.count - 1))
   
   return(list(logtau = logtau, Varmeank = Varmeank, Varcovk = Varcovk, 
               ve.elbos = ve.elbos, n_iter = ve.count, test = test))

@@ -99,12 +99,12 @@
 #' @export
 #' @seealso \code{\link{fem}}
 #' @examples
-#' data(iris)
-#' res = fem(iris[,-5],K=3,model='AkBk',method='gs')
-#' res
-#' plot(res)
-#' fem.ari(res,as.numeric(iris$Species))
-#' table(iris$Species,res$cls)
+#' # Chang's 1983 setting
+#' simu = simu_bfem(300, which = "Chang1983")
+#' Y = simu$Y
+#' res.bfem = bfem(Y, K = 2:6, model=c('AB'), init = 'kmeans', nstart = 1, 
+#'                maxit.em = 10, eps.em = 1e-3, maxit.ve = 3, mc.cores = 2)
+#' 
 bfem <- function(Y, K=2:6, model='AkjBk', method='svd', crit='icl', maxit.em=100,
                 eps.em=1e-6, maxit.ve=3, eps.ve=1e-4, lambda = 1e3, emp.bayes=T,
                 init='kmeans', nstart=10, Tinit=c(), kernel='', 

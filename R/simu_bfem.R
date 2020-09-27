@@ -19,11 +19,13 @@
 #' \item Y - The simulated data.
 #' \item cls - The true clustering.
 #' }
+#' 
 #' @export
-#'
 #' @examples
+#' n = 300
+#' 
 #' # Chang's 1983 setting
-#' simu = simu_bfem(n, which = "Chang1983")
+#' simu = simu_bfem(n = n, which = "Chang1983")
 #' 
 #' # Section 4.2 setting
 #' p = 25
@@ -35,9 +37,9 @@
 #' simu = simu_bfem(n, which = "section4.3", snr = 10)
 simu_bfem <- function(n, which = "Chang1983", ...) {
   simu = switch(which,
-                "Chang1983" = simu.Chang1983(n),
-                "section4.2" = simu.section4.2(n, ...),
-                "section4.3" = simu.section4.3(n, ...))
+                "Chang1983" = simu.Chang1983(n=n),
+                "section4.2" = simu.section4.2(n=n, ...),
+                "section4.3" = simu.section4.3(n=n, ...))
   return(simu)
 }
 
@@ -67,7 +69,7 @@ simu.section4.2 <- function(n, p = 50, noise = 1) {
   d = 2
   K = 3
   S = array(0,c(d,d,K))
-  S[,,2] = S[,,3] = S[,,1] = sigma * matrix(c(1.5,0.75, 0.75, 0.45))
+  S[,,2] = S[,,3] = S[,,1] = matrix(c(1.5,0.75, 0.75, 0.45))
   
   cst = 2.5
   mu = matrix(0, d, K)
@@ -97,5 +99,5 @@ simu.section4.2 <- function(n, p = 50, noise = 1) {
 simu.section4.3 <- function(n, p = 150, snr = 3) {
   # inverse formula: snr = 10*log10(1.95 / beta)
   beta = 1.95 / (exp(snr * log(10)/10))
-  simu.section4.2(n, p = p, noise = beta)
+  simu.section4.2(n=n, p = p, noise = beta)
 }
