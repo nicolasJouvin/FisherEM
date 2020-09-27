@@ -7,7 +7,8 @@ Date: 2020-07-21
 Encoding: UTF-8
 Author: Charles Bouveyron, Camille Brunet & Nicolas Jouvin.
 Maintainer: Charles Bouveyron <charles.bouveyron@gmail.com>
-Depends: MASS, parallel, elasticnet
+Depends: MASS, parallel, elasticnet, ggplot2
+Imports: ellipse, plyr
 Description: The FisherEM algorithm, proposed by Bouveyron & Brunet (2012) <doi:10.1007/s11222-011-9249-9>,
         is an efficient method for the clustering of high-dimensional data. FisherEM models and 
         clusters the data in a discriminative and low-dimensional latent subspace. It also provides
