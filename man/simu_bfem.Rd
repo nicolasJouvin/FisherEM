@@ -24,7 +24,11 @@ simu_bfem(n, which = "Chang1983", ...)
 }}
 }
 \value{
-
+A list with slots
+\itemize{
+\item Y - The simulated data.
+\item cls - The true clustering.
+}
 }
 \description{
 Experimental setting of the chapter BFEM

@@ -26,8 +26,9 @@ bfem(
 )
 }
 \arguments{
-\item{Y}{The data matrix. Categorical variables and missing values are not
-allowed.}
+\item{Y}{The data matrix. 
+Categorical variables and missing values are not
+  allowed.}
 
 \item{K}{An integer vector specifying the numbers of mixture components
 (clusters) among which the model selection criterion will choose the most

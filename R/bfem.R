@@ -8,7 +8,8 @@
 #' algorithm estimates both the discriminative subspace and the parameters of
 #' the mixture model.
 #'
-#' @param Y The data matrix. Categorical variables and missing values are not
+#' @param Y The data matrix. 
+#' Categorical variables and missing values are not
 #'   allowed.
 #' @param K An integer vector specifying the numbers of mixture components
 #'   (clusters) among which the model selection criterion will choose the most

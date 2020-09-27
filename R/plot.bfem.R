@@ -14,15 +14,13 @@ utils::globalVariables(names = c('elbo', 'iteration', 'Cluster',
 #'   \code{plot_crit()} to plot the criterion value. \item "elbo" - Uses
 #'   \code{plot_bound()} to plot the variational lower bound evolution. }
 #' @param ... Additional parameter to pass to corresponding functions:
-#' \itemize{
-#' \item crit - Used to specify which criterion should be plotted. Possible values are "aic", "bic" and 'icl. The default is the criterion used in the algorithm.
-#' \item alpha_levels - A vector giving the desired Gaussian ellipses level set. Default to 0.95.
-#' \item plot.dims - The dimension to be plotted. Default to the first two dimensions.
-#' \item show.ellipses - Should Gaussian ellipses be plotted. Default to TRUE
-#' \item show.uncertainty - Should uncertainty be plotted. A point is considered uncertain if its posterior probability of membership is peaked toward 2 or more clusters. Graphically, it can be displayed with a bigger point size depending on the uncertainty level, bigger points being more uncertain.
-#' \item size - The point size.
-#' \item cex.uncertainty - The multiplicative factor for the basic point size controlling the size of uncertain points.
-#' }
+#' @param crit  Used to specify which criterion should be plotted. Possible values are "aic", "bic" and 'icl. The default is the criterion used in the algorithm.
+#' @param alpha_levels  A vector giving the desired Gaussian ellipses level set. Default to 0.95.
+#' @param plot.dims  The dimension to be plotted. Default to the first two dimensions.
+#' @param show.ellipses  Should Gaussian ellipses be plotted. Default to TRUE
+#' @param show.uncertainty  Should uncertainty be plotted. A point is considered uncertain if its posterior probability of membership is peaked toward 2 or more clusters. Graphically, it can be displayed with a bigger point size depending on the uncertainty level, bigger points being more uncertain.
+#' @param size  The point size.
+#' @param cex.uncertainty  The multiplicative factor for the basic point size controlling the size of uncertain points.
 #' @return a ggplot2 plot object
 #' @export
 #'
@@ -148,7 +146,7 @@ plot_bound = function(res) {
     ggplot2::geom_point(size=1.5) + 
     ggplot2::geom_line(size=1, alpha = 0.7, linetype='dashed') +
     ggplot2::xlab('Iteration') + ggplot2::ylab('Elbo') +
-    ggplot2::theme(text = element_text(size=20)) 
+    ggplot2::theme(text = ggplot2::element_text(size=20)) 
   gg
 }
 
@@ -167,9 +165,9 @@ plot_crit = function(res, crit = NULL) {
     ggplot2::geom_point() +
     ggplot2::geom_line() +
     ggplot2::ylab(base::casefold(crit, upper = T)) +
-    scale_shape_manual(values = shape_palette) +
-    scale_linetype_manual(values = shape_palette) +
-    scale_color_manual(values = color_palette)
+    ggplot2::scale_shape_manual(values = shape_palette) +
+    ggplot2::scale_linetype_manual(values = shape_palette) +
+    ggplot2::scale_color_manual(values = color_palette)
   
   gg
 }

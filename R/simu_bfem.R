@@ -14,7 +14,11 @@
 #' \item snr (for `"section4.3"` only) - Signal-to-noise ratio (in decibels) representing the ratio of signal and noise variances in logarithmic scale. The greater snr, the smaller noise variance.
 #' }
 #' 
-#' @return
+#' @return A list with slots
+#' \itemize{
+#' \item Y - The simulated data.
+#' \item cls - The true clustering.
+#' }
 #' @export
 #'
 #' @examples
