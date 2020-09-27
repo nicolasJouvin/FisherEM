@@ -142,12 +142,12 @@ algorithm estimates both the discriminative subspace and the parameters of
 the mixture model.
 }
 \examples{
-data(iris)
-res = fem(iris[,-5],K=3,model='AkBk',method='gs')
-res
-plot(res)
-fem.ari(res,as.numeric(iris$Species))
-table(iris$Species,res$cls)
+# Chang's 1983 setting
+simu = simu_bfem(300, which = "Chang1983")
+Y = simu$Y
+res.bfem = bfem(Y, K = 2:6, model=c('AB'), init = 'kmeans', nstart = 1, 
+               maxit.em = 10, eps.em = 1e-3, maxit.ve = 3, mc.cores = 2)
+
 }
 \seealso{
 \code{\link{fem}}

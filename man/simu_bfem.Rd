@@ -34,8 +34,10 @@ A list with slots
 Experimental setting of the chapter BFEM
 }
 \examples{
+n = 300
+
 # Chang's 1983 setting
-simu = simu_bfem(n, which = "Chang1983")
+simu = simu_bfem(n = n, which = "Chang1983")
 
 # Section 4.2 setting
 p = 25

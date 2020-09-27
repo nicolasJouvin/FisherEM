@@ -7,31 +7,32 @@
 \alias{plot_crit}
 \title{Plotting function}
 \usage{
-\method{plot}{bfem}(res, type = "subspace", ...)
+\method{plot}{bfem}(x, type = "subspace", ...)
 
 plot_subspace(
-  res,
+  x,
   alpha_levels = c(0.95),
   plot.dims = c(1, 2),
   show.ellipses = T,
   show.uncertainty = T,
   size = 2,
-  cex.uncertainty = 1
+  cex.uncertainty = 1,
+  ...
 )
 
-plot_bound(res)
+plot_bound(x, ...)
 
-plot_crit(res, crit = NULL)
+plot_crit(x, crit = NULL, ...)
 }
 \arguments{
-\item{res}{The results of \code{\link{bfem}}.}
+\item{x}{The results of \code{\link{bfem}}.}
 
 \item{type}{The plot type: \itemize{ \item "subspace" (default) - Uses
 \code{plot_subspace()} to plot the projected data \item "criterion" - Uses
 \code{plot_crit()} to plot the criterion value. \item "elbo" - Uses
 \code{plot_bound()} to plot the variational lower bound evolution. }}
 
-\item{...}{Additional parameter to pass to corresponding functions:}
+\item{...}{Additional parameter to pass to corxponding functions:}
 
 \item{alpha_levels}{A vector giving the desired Gaussian ellipses level set. Default to 0.95.}
 
@@ -60,11 +61,15 @@ function is a wrapper function over the 3 other functions
 
 \item \code{plot_bound}: plot the variational bound evolution
 
-\item \code{plot_crit}: Plot the criterion result
+\item \code{plot_crit}: Plot the criterion xult
 }}
 
 \examples{
 \donttest{
 data(iris)
+Y = iris[,-5]
+res = bfem(Y, 3, model = 'DB')
+gg = plot(x=res, type = "subspace")
+print(gg)
 }
 }

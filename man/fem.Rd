@@ -92,7 +92,7 @@ table(iris$Species,res$cls)
 \donttest{
 # Fit several models and numbers of groups (use by default on non-Windows
 # platforms the parallel computing).
-res = fem(iris[,-5],K=2:6,model='all',method='gs')
+res = fem(iris[,-5],K=2:6,model='all',method='gs', mc.cores=2)
 res
 plot(res)
 fem.ari(res,as.numeric(iris$Species))
