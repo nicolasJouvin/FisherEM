@@ -4,6 +4,7 @@ Title: The FisherEM Algorithm to Simultaneously Cluster and Visualize
         High-Dimensional Data
 Version: 1.5.2
 Date: 2020-07-21
+Encoding: UTF-8
 Author: Charles Bouveyron, Camille Brunet & Nicolas Jouvin.
 Maintainer: Charles Bouveyron <charles.bouveyron@gmail.com>
 Depends: MASS, parallel, elasticnet
