@@ -46,6 +46,7 @@ bfem.main <- function(Y,K,init,nstart,control_bfem,Tinit,model,kernel,method,lam
     }
     tau = tau_list[[which.max(Ltmp)]]
   }
+  Tinit = tau # stock to return
   logtau = log(tau)
   
   
