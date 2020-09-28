@@ -20,7 +20,6 @@ matrix:
   - r: release
   - r: release
     os: osx
-    osx_image: xcode10.2
 
 
 #before_install:
