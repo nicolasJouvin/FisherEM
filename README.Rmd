@@ -80,7 +80,7 @@ simu = simu_bfem(n = 900, which = "section4.2", p = p, noise = noise)
 
 # Section 4.3: 
 snr = 3
-simu = simu_bfem(n=900, which = "section4.3", snr)
+simu = simu_bfem(n=900, which = "section4.3", snr = snr)
 ```
 
 

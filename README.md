@@ -82,7 +82,7 @@ simu = simu_bfem(n = 900, which = "section4.2", p = p, noise = noise)
 
 # Section 4.3: 
 snr = 3
-simu = simu_bfem(n=900, which = "section4.3", snr)
+simu = simu_bfem(n=900, which = "section4.3", snr = snr)
 ```
 
 #### The Bayesian Fisher-EM algorithm
@@ -145,9 +145,9 @@ data with the BFEM algorithm.
 res.bfem = bfem(simu$Y, K=3, model = 'DB', nstart = 10, method="gs")
 
 cat('Init ARI : ', aricode::ARI(simu$cls, max.col(res.bfem$Tinit)))
-## Init ARI :  0.4803693
+## Init ARI :  0.4052959
 cat('Final ARI : ', aricode::ARI(simu$cls, res.bfem$cls))
-## Final ARI :  0.9632792
+## Final ARI :  0.9709887
 
 plot(res.bfem, type = "subspace")
 ```
