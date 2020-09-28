@@ -8,7 +8,7 @@ bfem(
   Y,
   K = 2:6,
   model = "AkjBk",
-  method = "svd",
+  method = "gs",
   crit = "icl",
   maxit.em = 100,
   eps.em = 1e-06,
@@ -45,8 +45,7 @@ Similar to \code{\link{fem}}}
 associated to the discriminative subspace. Three methods are available:
 'gs' (Gram-Schmidt, the original proposition), 'svd' (based on SVD, faster)
 and 'reg' (the Fisher criterion is rewritten as a regression problem). The
-'svd' method is the default method since it is the fastest one on most data
-sets.}
+'gs' method is the default method.}
 
 \item{crit}{The model selection criterion to use for selecting the most
 appropriate model for the data. There are 3 possibilities: "bic", "aic" or
