@@ -22,4 +22,4 @@ Repository: CRAN
 Date/Publication: 2020-07-22 08:42:07 UTC
 RoxygenNote: 7.1.1
 Suggests: 
-    testthat
+    testthat, aricode
