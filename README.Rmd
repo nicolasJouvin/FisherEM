@@ -15,6 +15,15 @@ knitr::opts_chunk$set(
 
 > New version of the FisherEM package with the Bayesian Fisher EM implemented. 
 
+<!-- Not math in github md files -->
+<!-- ## The Bayesian Discriminative Latent Mixture model -->
+
+<!-- \begin{align*} -->
+<!--  \mu_k & \sim \mathcal{N}_d(0_d, \lambda I_d), \\ -->
+<!--  x_i & \sim \sum_k \pi_k  \mathcal{N}_d(\mu_k, \Sigma_k), \\ -->
+<!--  y_i \mid x_i, \epsilon_i & \sim \mathcal{N}_p(U x_i, U \Sigma_k U^\top). -->
+<!-- \end{align*} -->
+
 ## Installation
 
 ### R Package installation
@@ -56,7 +65,7 @@ library(FisherEM)
 
 ## New features 
 
-#### Simulation function
+### Simulation function
 
 We added the script to simulate and reproduce of the BFEM chapter, 3 simulations are available.
 ```{r simulations, eval=FALSE}
@@ -67,11 +76,11 @@ simu = simu_bfem(n, which = "Chang1983")
 # Section 4.2: 
 p = 50
 noise = 1
-simu = simu_bfem(n = n, which = "section4.2", p = p, noise = noise)
+simu = simu_bfem(n = 900, which = "section4.2", p = p, noise = noise)
 
 # Section 4.3: 
 snr = 3
-simu = simu_bfem(n=n, which = "section4.2", snr)
+simu = simu_bfem(n=900, which = "section4.2", snr)
 ```
 
 
@@ -97,3 +106,38 @@ ggbound
 ggspace = plot(res.bfem, type = 'subspace')
 ggspace
 ```
+
+#### High-dimensional example
+
+Simulate from the frequentist DLM model with K=3 clusters. The latent space is of dimension d=2, and the other (p-d) dimensions are centered Gaussians with variance `noise`. 
+<!-- \begin{align*} -->
+<!-- 	\mu_k = 3 \; (0, k)^\top  & &  \Sigma_{k} = \begin{pmatrix} -->
+<!-- 	1.5 & 0.75 \\ -->
+<!-- 	0.75 & 0.45 -->
+<!-- 	\end{pmatrix} & & \pi = (0.4, 0.3, 0.3)^\top. -->
+<!-- \end{align*} -->
+
+
+```{r example-section4.2}
+simu = simu_bfem(n = 900, which = "section4.2", p = 50, noise = 1)
+Y = simu$Y
+cl_true = simu$cl_true
+
+# plot true subspace in 2-d
+df.true = data.frame(simu$X, Cluster = factor(simu$cls))
+ggtrue = ggplot(df.true, aes(x = X1, y=X2, col=Cluster, shape=Cluster)) +
+  geom_point(size = 2) +
+  scale_color_brewer(palette="Set2")  # color-blind friendly palette
+print(ggtrue)
+```
+And then cluster the data with the BFEM algorithm.
+```{r bfem-section4.2}
+res.bfem = bfem(simu$Y, K=3, model = 'DB', nstart = 10, method="gs")
+
+cat('Init ARI : ', aricode::ARI(simu$cls, max.col(res.bfem$Tinit)))
+cat('Final ARI : ', aricode::ARI(simu$cls, res.bfem$cls))
+
+plot(res.bfem, type = "subspace")
+```
+
+
