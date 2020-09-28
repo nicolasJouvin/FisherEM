@@ -145,11 +145,21 @@ data with the BFEM algorithm.
 res.bfem = bfem(simu$Y, K=3, model = 'DB', nstart = 10, method="gs")
 
 cat('Init ARI : ', aricode::ARI(simu$cls, max.col(res.bfem$Tinit)))
-## Init ARI :  0.3911219
+## Init ARI :  0.4711389
 cat('Final ARI : ', aricode::ARI(simu$cls, res.bfem$cls))
-## Final ARI :  0.9613067
+## Final ARI :  0.9768931
 
 plot(res.bfem, type = "subspace")
 ```
 
 ![](man/figures/bfem-section4.2-1.png)<!-- -->
+
+## References
+
+  - Original paper for the Fisher-EM algorithm: [Simultaneous
+    model-based clustering and visualization in the Fisher
+    discriminative
+    subspace](https://hal-paris1.archives-ouvertes.fr/hal-00492406v4/document)
+    (C. Bouveyron & C. Brunet-Saumard)
+
+  - The Bayesian Fisher-EM: Preprint soon (in October 2020)

@@ -141,3 +141,8 @@ plot(res.bfem, type = "subspace")
 ```
 
 
+## References
+
+- Original paper for the Fisher-EM algorithm: [Simultaneous model-based clustering and visualization in the Fisher discriminative subspace](https://hal-paris1.archives-ouvertes.fr/hal-00492406v4/document) (C. Bouveyron & C. Brunet-Saumard)
+
+- The Bayesian Fisher-EM: Preprint soon (in October 2020)
