@@ -40,7 +40,7 @@ bfem.main <- function(Y,K,init,nstart,control_bfem,Tinit,model,kernel,method,lam
                  'svd'= fstep.fisher(XX,tau_list[[i]],S,kernel),
                  'gs'= fstep.GramSc(XX,tau_list[[i]],S,kernel),
                  'reg'  = fstep.qiao(Y,tau_list[[i]],kernel))
-      prms      = fem.mstep(Y,U,tau_list[[i]],model=model,method=method)
+      prms      = bfem.init.prms(Y,U,tau_list[[i]],model=model,method=method)
       res.estep = fem.estep(prms,Y,U)
       Ltmp[i]   = res.estep$loglik
     }
@@ -65,7 +65,7 @@ bfem.main <- function(Y,K,init,nstart,control_bfem,Tinit,model,kernel,method,lam
   }
   
   # Initial M-step: use frequentist estimates of Sk and PI
-  prms.fem = fem.mstep(Y,U,tau,model=model,method=method)
+  prms.fem = bfem.init.prms(Y,U,tau,model=model,method=method)
   prms = transform_param_fem_to_bfem(prms.fem)
   
   # Inital VE-step: 1 iteration of fixed point for var parameter of q(\mu_k)
@@ -75,12 +75,10 @@ bfem.main <- function(Y,K,init,nstart,control_bfem,Tinit,model,kernel,method,lam
   elbo = bfem.elbo(Y, U, prms, nu, lambda, logtau, Varmeank, Varcovk)
   
   # ================ Main loop BFEM ===============================
-  conv = c(Inf)
   Lobs = rep(-Inf , 1, em.max.iter + 1)
   Lobs[1] = elbo
   Linf_new  = Lobs[1]
   for (i in 1:em.max.iter) {
-    # if (verbose > 0) cat('BFEM iteration : ', i,'\n')
     
     # F-step
     U = switch(method,
@@ -113,8 +111,9 @@ bfem.main <- function(Y,K,init,nstart,control_bfem,Tinit,model,kernel,method,lam
       lambda = updateLambda(Varmeank, Varcovk, nu)
     }
     
-    elbo = bfem.elbo(Y, U, prms, nu, lambda, logtau, Varmeank, Varcovk)
     # Stop criterion
+    elbo = bfem.elbo(Y, U, prms, nu, lambda, logtau, Varmeank, Varcovk)
+    
     if (is.na(elbo)) {
       warning('Likelihood becomes NA (probably emptied cluster).')
       break
