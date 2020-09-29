@@ -145,9 +145,9 @@ data with the BFEM algorithm.
 res.bfem = bfem(simu$Y, K=3, model = 'DB', nstart = 10, method="gs")
 
 cat('Init ARI : ', aricode::ARI(simu$cls, max.col(res.bfem$Tinit)))
-## Init ARI :  0.4052959
+## Init ARI :  0.4412977
 cat('Final ARI : ', aricode::ARI(simu$cls, res.bfem$cls))
-## Final ARI :  0.9709887
+## Final ARI :  0.9603667
 
 plot(res.bfem, type = "subspace")
 ```
