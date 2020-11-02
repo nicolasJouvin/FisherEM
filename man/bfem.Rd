@@ -7,6 +7,7 @@
 bfem(
   Y,
   K = 2:6,
+  d = NULL,
   model = "AkjBk",
   method = "gs",
   crit = "icl",
@@ -33,6 +34,9 @@ Categorical variables and missing values are not
 \item{K}{An integer vector specifying the numbers of mixture components
 (clusters) among which the model selection criterion will choose the most
 appropriate number of groups. Default is 2:6.}
+
+\item{d}{An integer specifyin the dimension of the discriminative subspace. 
+Default to K - 1.}
 
 \item{model}{A vector of Bayesian discriminative latent mixture (BDLM) models
 to fit. There are 12 different models: "DkBk", "DkB", "DBk", "DB", "AkjBk",
