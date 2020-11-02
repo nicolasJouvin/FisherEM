@@ -1,8 +1,8 @@
-fstep.qiao <- function(X,T,kernel){
+fstep.qiao <- function(X,d,T,kernel){
 	# Initialization
 	K = ncol(T)
 	p = ncol(X)
-	d = min(p-1,(K-1))
+	if(is.null(d)) d = min(p-1,(K-1))
 	m = matrix(NA,K,p)
 
 	# Compute summary statistics

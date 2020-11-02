@@ -1,10 +1,10 @@
 fstep.GramSc <-
-function(XX,T,S,kernel){
+function(XX,d,T,S,kernel){
 	n = nrow(XX)
 	p = ncol(XX)
 	K = ncol(T)
 	#m = colMeans(Y)
-	d = min(p-1,(K-1))
+	if (is.null(d))	d = min(p-1,(K-1))
 	U = matrix(NA,p,d)
 
 	# Compute S

@@ -1,4 +1,4 @@
-bfem.main <- function(Y,K,init,nstart,control_bfem,Tinit,model,kernel,method,lambda){
+bfem.main <- function(Y,K,d=NULL,init,nstart,control_bfem,Tinit,model,kernel,method,lambda){
 
   em.tol = control_bfem$em$tol
   ve.tol = control_bfem$var$tol
@@ -11,7 +11,7 @@ bfem.main <- function(Y,K,init,nstart,control_bfem,Tinit,model,kernel,method,lam
   Y = as.matrix(Y)
   n = nrow(Y)
   p = ncol(Y)
-  d = min((K-1),(p-1))
+  if (is.null(d))	d = min(p-1,(K-1))
   
   # Compute S
   m = colMeans(Y)
@@ -37,9 +37,9 @@ bfem.main <- function(Y,K,init,nstart,control_bfem,Tinit,model,kernel,method,lam
         tau_list[[i]] = tau
       }
       U = switch(method,
-                 'svd'= fstep.fisher(XX,tau_list[[i]],S,kernel),
-                 'gs'= fstep.GramSc(XX,tau_list[[i]],S,kernel),
-                 'reg'  = fstep.qiao(Y,tau_list[[i]],kernel))
+                 'svd'= fstep.fisher(XX,d,tau_list[[i]],S,kernel),
+                 'gs'= fstep.GramSc(XX,d,tau_list[[i]],S,kernel),
+                 'reg'  = fstep.qiao(Y,d,tau_list[[i]],kernel))
       prms      = bfem.init.prms(Y,U,tau_list[[i]],model=model,method=method)
       res.estep = fem.estep(prms,Y,U)
       Ltmp[i]   = res.estep$loglik
@@ -52,9 +52,9 @@ bfem.main <- function(Y,K,init,nstart,control_bfem,Tinit,model,kernel,method,lam
   
   # ================ Set initial quantities fo BFEM ==========================
   # initial F-step
-  U = switch(method,'svd'= fstep.fisher(XX,tau,S,kernel),
-             'gs'= fstep.GramSc(XX,tau,S,kernel),
-             'reg'  = fstep.qiao(Y,tau,kernel))
+  U = switch(method,'svd'= fstep.fisher(XX,d,tau,S,kernel),
+             'gs'= fstep.GramSc(XX,d,tau,S,kernel),
+             'reg'  = fstep.qiao(Y,d,tau,kernel))
   
   # Initialize nu
   if(emp.bayes) {
@@ -82,9 +82,9 @@ bfem.main <- function(Y,K,init,nstart,control_bfem,Tinit,model,kernel,method,lam
     
     # F-step
     U = switch(method,
-               'svd'= fstep.fisher(XX,tau,S,kernel),
-               'gs'= fstep.GramSc(XX,tau,S,kernel),
-               'reg'  = fstep.qiao(Y,tau,kernel))
+               'svd'= fstep.fisher(XX,d,tau,S,kernel),
+               'gs'= fstep.GramSc(XX,d,tau,S,kernel),
+               'reg'  = fstep.qiao(Y,d,tau,kernel))
     
     # Variational E-step (don't change tau yet, only q(\mu_k))
     ve_step = bfem.vestep(Y, U, prms, nu, lambda, logtau, 
@@ -157,7 +157,7 @@ transform_param_fem_to_bfem <- function(prms.fem) {
   
   K = prms.fem$K
   p = prms.fem$p
-  d = min(p-1, K-1)
+  d = prms.fem$d
   
   # new structure
   prms = list(Sk = list(), PI = NULL)

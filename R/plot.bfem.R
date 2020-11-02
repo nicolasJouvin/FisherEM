@@ -143,7 +143,7 @@ plot_subspace <- function(x, alpha_levels = c(0.95), plot.dims = c(1,2),
                     show.legend = F)
       }
       
-      means = as.data.frame(t(x$var_param$Varmeank))
+      means = as.data.frame(t(x$var_param$Varmeank[plot.dims,]))
       means$Cluster = as.factor(1:x$K)
       gg = gg + 
         ggplot2::geom_point(data=means, 

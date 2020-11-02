@@ -14,6 +14,8 @@
 #' @param K An integer vector specifying the numbers of mixture components
 #'   (clusters) among which the model selection criterion will choose the most
 #'   appropriate number of groups. Default is 2:6.
+#' @param d An integer specifyin the dimension of the discriminative subspace. 
+#' Default to K - 1.   
 #' @param model A vector of Bayesian discriminative latent mixture (BDLM) models
 #'   to fit. There are 12 different models: "DkBk", "DkB", "DBk", "DB", "AkjBk",
 #'   "AkjB", "AkBk", "AkBk", "AjBk", "AjB", "ABk", "AB".  The option "all"
@@ -104,7 +106,7 @@
 #' res.bfem = bfem(Y, K = 2:6, model=c('AB'), init = 'kmeans', nstart = 1, 
 #'                maxit.em = 10, eps.em = 1e-3, maxit.ve = 3, mc.cores = 2)
 #' 
-bfem <- function(Y, K=2:6, model='AkjBk', method='gs', crit='icl', maxit.em=100,
+bfem <- function(Y, K=2:6, d=NULL, model='AkjBk', method='gs', crit='icl', maxit.em=100,
                 eps.em=1e-6, maxit.ve=3, eps.ve=1e-4, lambda = 1e3, emp.bayes=T,
                 init='kmeans', nstart=10, Tinit=c(), kernel='', 
                 disp=FALSE, mc.cores=(detectCores()-1), subset=NULL) {
@@ -138,19 +140,20 @@ bfem <- function(Y, K=2:6, model='AkjBk', method='gs', crit='icl', maxit.em=100,
     if (init=='user') Tinit = Tinit[sel,]
   }
   
+  
   # Run FEM depending on Windows or not (allows parallel computing)
   if (Sys.info()[['sysname']] == 'Windows' | mc.cores == 1){
     prms = expand.grid(model=model,K=K)
     RES = list()
     for (i in 1:nrow(prms)){
-      RES[[i]] = bfem.main(Y=Y,K=prms$K[i],model=prms$model[i],init=init,
+      RES[[i]] = bfem.main(Y=Y,K=prms$K[i],d=d,model=prms$model[i],init=init,
                            nstart=nstart, control_bfem=control_bfem,
                            Tinit=Tinit,kernel=kernel,method=method, lambda=lambda)
     }
   }
   else {
     prms = expand.grid(model=model,K=K)
-    MoreArgs = list(Y=Y,init=init,nstart=nstart,control_bfem=control_bfem,
+    MoreArgs = list(Y=Y,d=d,init=init,nstart=nstart,control_bfem=control_bfem,
                     Tinit=Tinit,kernel=kernel,method=method, lambda=lambda)
     RES = do.call(mcmapply, c(list(FUN="bfem.main",MoreArgs=MoreArgs,mc.cores=mc.cores,
                                    mc.silent=TRUE,mc.preschedule=FALSE),prms))

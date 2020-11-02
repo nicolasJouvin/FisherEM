@@ -6,9 +6,8 @@ bfem.init.prms <- function (Y,U,tau, model,method) {
   n = nrow(Y)
   p = ncol(Y)
   K = ncol(tau)
-  d = min(p-1,(K-1))
   U = as.matrix(U)
-  
+  d = ncol(U)
   mu   = matrix(NA,K,d)
   m   = matrix(NA,K,p)
   prop = rep(c(NA),1,K)
@@ -78,5 +77,5 @@ bfem.init.prms <- function (Y,U,tau, model,method) {
   b[b<=0] = 1e-3
   for (k in 1:K) if (Trace(D[k,,]<1e-3)!=0) test = test+1
   
-  prms = list(K=K,p=p,mean=mu,my=m,prop=prop,D=D,b=b,model=model,method=method,V=U,test=test)
+  prms = list(K=K,p=p,d=d,mean=mu,my=m,prop=prop,D=D,b=b,model=model,method=method,V=U,test=test)
 }

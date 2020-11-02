@@ -9,7 +9,7 @@ fem.estep <- function(prms,Y,U){
 	prop = prms$prop
 	D = prms$D
 	b = prms$b
-	d = min(p-1,(K-1))
+	d = ncol(U)
 	QQ = matrix(NA,n,K)
 	T = matrix(NA,n,K)
 	

@@ -32,18 +32,18 @@ fem.main <- function(Y,K,init,nstart,maxit,eps,Tinit,model,kernel='',method){
         TT[[i]] = T
       }
       V = switch(method,
-                 'svd'= fstep.fisher(XX,TT[[i]],S,kernel),
-                 'gs'= fstep.GramSc(XX,TT[[i]],S,kernel),
-                 'reg'  = fstep.qiao(Y,TT[[i]],kernel))
+                 'svd'= fstep.fisher(XX,d,TT[[i]],S,kernel),
+                 'gs'= fstep.GramSc(XX,d,TT[[i]],S,kernel),
+                 'reg'  = fstep.qiao(Y,d,TT[[i]],kernel))
       prms      = fem.mstep(Y,V,TT[[i]],model=model,method=method)
       res.estep = fem.estep(prms,Y,V)
       Ltmp[i]   = res.estep$loglik
     }
     T = TT[[which.max(Ltmp)]]
   }
-  V = switch(method,'svd'= fstep.fisher(XX,T,S,kernel),
-             'gs'= fstep.GramSc(XX,T,S,kernel),
-             'reg'  = fstep.qiao(Y,T,kernel))
+  V = switch(method,'svd'= fstep.fisher(XX,d,T,S,kernel),
+             'gs'= fstep.GramSc(XX,d,T,S,kernel),
+             'reg'  = fstep.qiao(Y,d,T,kernel))
   prms = fem.mstep(Y,V,T,model=model,method=method)
   res.estep = fem.estep(prms,Y,V)
   Lobs[1] = res.estep$loglik
@@ -53,9 +53,9 @@ fem.main <- function(Y,K,init,nstart,maxit,eps,Tinit,model,kernel='',method){
   for (i in 1:maxit){
     # The three main steps F, M and E
     V = switch(method,
-               'svd'= fstep.fisher(XX,T,S,kernel),
-               'gs'= fstep.GramSc(XX,T,S,kernel),
-               'reg'  = fstep.qiao(Y,T,kernel))
+               'svd'= fstep.fisher(XX,d,T,S,kernel),
+               'gs'= fstep.GramSc(XX,d,T,S,kernel),
+               'reg'  = fstep.qiao(Y,d,T,kernel))
     prms      = fem.mstep(Y,V,T,model=model,method=method)
     if (prms$test !=0) {warning("some classes become empty\n",call.=F); break}
     res.estep = fem.estep(prms,Y,V)

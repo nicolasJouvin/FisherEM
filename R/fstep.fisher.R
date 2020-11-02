@@ -1,10 +1,10 @@
-fstep.fisher <- function(XX,T,S,kernel){
+fstep.fisher <- function(XX,d,T,S,kernel){
 	n = nrow(XX)
 	p = ncol(XX)
 	K = ncol(T)
 	#m = colMeans(Y)
-	d = min(p-1,(K-1))
-
+	if (is.null(d))	d = min(p-1,(K-1))
+	
 	# Compute S
 	#XX = as.matrix(Y - t(m*t(matrix(1,n,p))))
 	TT = t(apply(T,1,"/",sqrt(colSums(T))))
