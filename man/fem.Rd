@@ -56,8 +56,7 @@ A list is returned:
   \item{cls}{the group membership of each individual estimated by the Fisher-EM algorithm.}
   \item{P}{the posterior probabilities of each individual for each group.}
   \item{U}{The loading matrix which determines the orientation of the discriminative subspace.}
-  \item{mean}{The estimated mean in the subspace.}
-  \item{my}{The estimated mean in the observation space.}
+  \item{mean}{The estimated mean in the observation space.}
   \item{prop}{The estimated mixture proportion.}
   \item{D}{The covariance matrices in the subspace.}
   \item{aic}{The value of the Akaike information criterion.}
