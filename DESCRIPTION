@@ -2,7 +2,7 @@ Package: FisherEM
 Type: Package
 Title: The FisherEM Algorithm to Simultaneously Cluster and Visualize
         High-Dimensional Data
-Version: 1.5.2
+Version: 1.6.1
 Date: 2020-07-21
 Encoding: UTF-8
 Author: Charles Bouveyron, Camille Brunet & Nicolas Jouvin.
