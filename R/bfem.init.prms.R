@@ -1,6 +1,6 @@
-#' Frequentist Mstep to initialize bfem.main and bem.sparse
 bfem.init.prms <- function (Y,U,tau, model,method) {
-   
+  # Frequentist Mstep to initialize bfem.main and bem.sparse
+  
   # Initialization
   Y = as.matrix(Y)
   n = nrow(Y)
