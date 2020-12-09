@@ -143,6 +143,7 @@ high-dimensional data. It is based on a Gaussian Mixture Model and on the
 idea that the data lives in a common and low dimensional subspace. A VEM-like
 algorithm estimates both the discriminative subspace and the parameters of
 the mixture model.
+More information is available in the online \href{https://arxiv.org/abs/2012.04620}{ArXiV preprint}.
 }
 \examples{
 # Chang's 1983 setting

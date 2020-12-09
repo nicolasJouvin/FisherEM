@@ -7,7 +7,7 @@
 #' idea that the data lives in a common and low dimensional subspace. A VEM-like
 #' algorithm estimates both the discriminative subspace and the parameters of
 #' the mixture model.
-#'
+#' More information is available in the online \href{https://arxiv.org/abs/2012.04620}{ArXiV preprint}.
 #' @param Y The data matrix. 
 #' Categorical variables and missing values are not
 #'   allowed.
